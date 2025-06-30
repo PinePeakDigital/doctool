@@ -69,6 +69,7 @@ doctool/
 - ✅ Modular agent file organization
 - ✅ Knowledge file management system (completed)
 - ✅ Comprehensive test suite with Vitest
+- ✅ Content generation system with hybrid AI approach
 - ⏳ Full multi-agent documentation review system (planned)
 
 ## Next Steps
