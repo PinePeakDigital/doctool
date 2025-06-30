@@ -189,9 +189,21 @@ export function createKnowledgeFile(dirInfo: DirectoryInfo): boolean {
 export function initializeKnowledgeFiles(basePath: string = process.cwd()): void {
   console.log(`Scanning directories in: ${basePath}`);
   
-  const directories = getDirectoriesForKnowledgeFiles(basePath);
+  // First, check and create knowledge file for the root directory itself
+  const rootDirInfo = scanDirectory(basePath);
   let createdCount = 0;
   let existingCount = 0;
+  let totalDirectories = 1; // Count the root directory
+  
+  if (createKnowledgeFile(rootDirInfo)) {
+    createdCount++;
+  } else {
+    existingCount++;
+  }
+  
+  // Then scan all subdirectories recursively
+  const directories = getDirectoriesForKnowledgeFiles(basePath);
+  totalDirectories += directories.length;
 
   for (const dirInfo of directories) {
     if (createKnowledgeFile(dirInfo)) {
@@ -202,7 +214,7 @@ export function initializeKnowledgeFiles(basePath: string = process.cwd()): void
   }
 
   console.log(`\nSummary:`);
-  console.log(`- Directories scanned: ${directories.length}`);
+  console.log(`- Directories scanned: ${totalDirectories}`);
   console.log(`- Knowledge files created: ${createdCount}`);
   console.log(`- Knowledge files already existed: ${existingCount}`);
   
