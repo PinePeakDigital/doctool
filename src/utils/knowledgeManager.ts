@@ -82,25 +82,33 @@ export function scanDirectory(dirPath: string): DirectoryInfo {
 }
 
 /**
- * Gets all directories in the current working directory that should have knowledge files
+ * Gets all directories recursively that should have knowledge files
  */
 export function getDirectoriesForKnowledgeFiles(basePath: string = process.cwd()): DirectoryInfo[] {
   const directories: DirectoryInfo[] = [];
   
-  try {
-    const items = fs.readdirSync(basePath, { withFileTypes: true });
-    
-    for (const item of items) {
-      if (item.isDirectory() && !EXCLUDED_FOLDERS.has(item.name)) {
-        const dirPath = path.join(basePath, item.name);
-        const dirInfo = scanDirectory(dirPath);
-        directories.push(dirInfo);
+  function scanRecursively(currentPath: string) {
+    try {
+      const items = fs.readdirSync(currentPath, { withFileTypes: true });
+      
+      for (const item of items) {
+        if (item.isDirectory() && !EXCLUDED_FOLDERS.has(item.name) && !item.name.startsWith('.')) {
+          const dirPath = path.join(currentPath, item.name);
+          const dirInfo = scanDirectory(dirPath);
+          directories.push(dirInfo);
+          
+          // Recursively scan subdirectories
+          scanRecursively(dirPath);
+        }
       }
+    } catch (error) {
+      console.warn(`Warning: Could not read directory ${currentPath}:`, error);
     }
-  } catch (error) {
-    console.error(`Error reading base directory ${basePath}:`, error);
   }
-
+  
+  // Start recursive scanning from the base path
+  scanRecursively(basePath);
+  
   return directories;
 }
 
