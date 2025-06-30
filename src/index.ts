@@ -1,4 +1,5 @@
 import { Agent, PraisonAIAgents } from "praisonai";
+import "dotenv/config";
 
 const storyAgent = new Agent({
   instructions:
