@@ -20,6 +20,10 @@ importers:
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+    devDependencies:
+      '@types/node':
+        specifier: ^24.0.7
+        version: 24.0.7
 
 packages:
 
@@ -182,6 +186,9 @@ packages:
 
   '@types/node@18.19.113':
     resolution: {integrity: sha512-TmSTE9vyebJ9vSEiU+P+0Sp4F5tMgjiEOZaQUW6wA3ODvi6uBgkHQ+EsIu0pbiKvf9QHEvyRCiaz03rV0b+IaA==}
+
+  '@types/node@24.0.7':
+    resolution: {integrity: sha512-YIEUUr4yf8q8oQoXPpSlnvKNVKDQlPMWrmOcgzoduo7kvA2UF0/BwJ/eMKFTiTtkNL17I0M6Xe2tvwFU7be6iw==}
 
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -545,6 +552,9 @@ packages:
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
+  undici-types@7.8.0:
+    resolution: {integrity: sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==}
+
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -651,12 +661,16 @@ snapshots:
 
   '@types/node-fetch@2.6.12':
     dependencies:
-      '@types/node': 18.19.113
+      '@types/node': 24.0.7
       form-data: 4.0.3
 
   '@types/node@18.19.113':
     dependencies:
       undici-types: 5.26.5
+
+  '@types/node@24.0.7':
+    dependencies:
+      undici-types: 7.8.0
 
   abort-controller@3.0.0:
     dependencies:
@@ -1077,6 +1091,8 @@ snapshots:
   typescript@5.8.3: {}
 
   undici-types@5.26.5: {}
+
+  undici-types@7.8.0: {}
 
   util-deprecate@1.0.2:
     optional: true
