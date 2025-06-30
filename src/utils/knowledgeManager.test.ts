@@ -8,7 +8,7 @@ import {
   createKnowledgeFileTemplate,
   createKnowledgeFile,
   initializeKnowledgeFiles
-} from '../src/utils/knowledgeManager';
+} from './knowledgeManager';
 
 describe('Knowledge Manager', () => {
   let tempDir: string;

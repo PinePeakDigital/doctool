@@ -35,7 +35,11 @@ doctool/
 │   │   ├── storyAgent.ts
 │   │   ├── summaryAgent.ts
 │   │   └── knowledgeManagerAgent.ts
+│   ├── utils/           # Utility functions
+│   │   ├── knowledgeManager.ts      # Knowledge file management
+│   │   └── knowledgeManager.test.ts # Colocated tests
 │   └── index.ts         # Main application entry
+├── vitest.config.ts     # Test configuration
 ├── multi-agent-plan.md  # Detailed system architecture
 └── KNOWLEDGE.md         # This file
 ```
@@ -46,6 +50,12 @@ doctool/
 - One agent per file in the `src/agents/` directory
 - Use descriptive names ending in "Agent" (e.g., `knowledgeManagerAgent.ts`)
 - Export agents from `src/agents/index.ts` for clean imports
+
+### Testing Strategy
+- Tests are colocated with their source files (e.g., `knowledgeManager.test.ts` next to `knowledgeManager.ts`)
+- Use Vitest for testing with comprehensive coverage
+- Tests should be isolated and use temporary directories for file system operations
+- Run tests with `pnpm test` (single run) or `pnpm test:watch` (watch mode)
 
 ### Knowledge Management Strategy
 - Each directory should have a knowledge file if it contains important information
