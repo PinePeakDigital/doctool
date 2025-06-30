@@ -73,9 +73,15 @@ doctool/
 
 ## Next Steps
 
-1. Create utility functions for directory scanning and knowledge file management
-2. Implement the knowledge manager system using the hybrid approach
-3. Expand to full multi-agent documentation review capabilities
+1. ✅ Create utility functions for directory scanning and knowledge file management (completed)
+2. ✅ Implement the knowledge manager system using the hybrid approach (completed)
+3. 🔄 Execute knowledge file build-out plan (see `knowledge-buildout-plan.md`)
+4. ⏳ Expand to full multi-agent documentation review capabilities (planned)
+
+## Related Documentation
+
+- [`knowledge-buildout-plan.md`](./knowledge-buildout-plan.md) - Detailed plan for creating comprehensive knowledge files
+- [`multi-agent-plan.md`](./multi-agent-plan.md) - System architecture for multi-agent documentation review
 
 ---
 
