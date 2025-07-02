@@ -358,7 +358,9 @@ function generateBetterFileDescription(fileName: string, dirPath: string): strin
     const content = fs.readFileSync(filePath, 'utf8');
     
     // Analyze content for exports, classes, functions
-    const exports = (content.match(/export\s+(?:class|function|const|interface)\s+(\w+)/g) || []).length;
+    const namedExports = (content.match(/export\s+(?:class|function|const|interface)\s+(\w+)/g) || []).length;
+    const reExports = (content.match(/export\s*\{[^}]+\}/g) || []).length;
+    const exports = namedExports + reExports;
     const classes = (content.match(/class\s+\w+/g) || []).length;
     const interfaces = (content.match(/interface\s+\w+/g) || []).length;
     const functions = (content.match(/function\s+\w+|const\s+\w+\s*=\s*\(/g) || []).length;

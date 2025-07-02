@@ -540,8 +540,8 @@ export async function updateKnowledgeFilesWithAI(
   const { interactive = false, dryRun = false, severityThreshold = 'medium', verbose = false } = options;
   
   // Import here to avoid circular dependencies
-  const { analyzeDocumentationIssues } = await import('./documentationIssues');
-  const { applyDocumentationFixes, createFixReport } = await import('./documentationFixer');
+  const { analyzeDocumentationIssues } = await import('./documentationIssues.js');
+  const { applyDocumentationFixes, createFixReport } = await import('./documentationFixer.js');
   
   console.log(`🔄 Analyzing documentation issues in: ${basePath}`);
   
