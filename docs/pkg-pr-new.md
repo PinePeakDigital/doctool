@@ -9,6 +9,7 @@ pkg.pr.new creates ephemeral npm package releases for every commit and pull requ
 ## How to Use
 
 ### Install from main branch
+
 ```bash
 npm install https://pkg.pr.new/doctool@main
 # or
@@ -16,16 +17,19 @@ pnpm install https://pkg.pr.new/doctool@main
 ```
 
 ### Install from a specific commit
+
 ```bash
 npm install https://pkg.pr.new/doctool@sha-abc1234
 ```
 
 ### Install from a pull request
+
 ```bash
 npm install https://pkg.pr.new/doctool@pr-123
 ```
 
 ### Test the CLI after installation
+
 ```bash
 # If installed globally
 doctool --help
@@ -93,16 +97,19 @@ The package.json includes:
 ## Troubleshooting
 
 ### Package not found
+
 - Check that the workflow completed successfully
 - Verify the commit SHA or PR number is correct
 - Wait a few minutes for the package to become available
 
 ### Installation fails
+
 - Ensure you have Node.js 18+ installed
 - Try clearing npm/pnpm cache
 - Check network connectivity
 
 ### CLI not working after install
+
 - Verify the package was installed correctly: `npm list -g doctool`
 - Try running with npx: `npx doctool --help`
 - Check that the bin script is executable

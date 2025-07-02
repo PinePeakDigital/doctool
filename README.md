@@ -9,18 +9,21 @@ DocTool is a comprehensive documentation management tool that combines reliable 
 ## ✨ Features
 
 ### 🔍 **Stack-Agnostic Validation**
+
 - **File System Validation**: Verify file references, directory structures, and path accuracy
 - **Link Validation**: Check HTTP/HTTPS URLs, internal links, anchors, and email addresses
 - **Command Validation**: Validate shell commands and configuration examples
 - **Content Quality**: Detect broken formatting, placeholder text, and inconsistencies
 
 ### 🤖 **AI-Powered Enhancement**
+
 - **Smart Content Generation**: Analyze code to generate accurate documentation
 - **Issue-Driven Updates**: Identify specific problems and apply targeted fixes
 - **Template Population**: Replace placeholder content with meaningful descriptions
 - **Knowledge File Management**: Systematically create and maintain project documentation
 
 ### 🛠️ **Developer-Friendly Workflow**
+
 - **Git Integration**: Detect changes and provide review workflows
 - **Interactive Mode**: Control what gets updated with approval prompts
 - **Dry Run Support**: Preview changes before applying them
@@ -31,6 +34,7 @@ DocTool is a comprehensive documentation management tool that combines reliable 
 ### Installation
 
 #### Option 1: From Package (Recommended)
+
 ```bash
 # Install globally from npm
 npm install -g doctool
@@ -40,6 +44,7 @@ npm install --save-dev doctool
 ```
 
 #### Option 2: From Source
+
 ```bash
 # Clone the repository
 git clone https://github.com/your-username/doctool.git
@@ -71,6 +76,7 @@ doctool update
 ## 📖 Commands
 
 ### `validate [path]`
+
 Validates documentation files for broken links, missing references, and content issues.
 
 ```bash
@@ -82,6 +88,7 @@ doctool validate /path/to/docs
 ```
 
 **What it checks:**
+
 - File references and paths
 - HTTP/HTTPS link availability
 - Internal link targets
@@ -90,6 +97,7 @@ doctool validate /path/to/docs
 - Directory structure accuracy
 
 ### `init [path]`
+
 Initializes knowledge files across your project directories.
 
 ```bash
@@ -101,11 +109,13 @@ doctool init /path/to/project
 ```
 
 **What it creates:**
+
 - `knowledge.md` files in each significant directory
 - Standardized documentation templates
 - Proper section structure and formatting
 
 ### `enhance [path]`
+
 Enhances knowledge files with AI-generated content.
 
 ```bash
@@ -117,12 +127,14 @@ doctool enhance /path/to/project
 ```
 
 **What it does:**
+
 - Analyzes code files to generate accurate descriptions
 - Replaces template placeholders with meaningful content
 - Adds file listings and dependency information
 - Creates comprehensive documentation from code analysis
 
 ### `update [path]`
+
 Updates documentation using issue-driven targeted fixes.
 
 ```bash
@@ -140,6 +152,7 @@ doctool update --severity-threshold low
 ```
 
 **What it fixes:**
+
 - Missing file documentation
 - Outdated file descriptions
 - Placeholder content
@@ -147,6 +160,7 @@ doctool update --severity-threshold low
 - Missing standard sections
 
 ### `agents`
+
 Starts AI agents for advanced documentation processing (requires PraisonAI setup).
 
 ## 🧪 Testing Unreleased Versions
@@ -175,11 +189,13 @@ DocTool works out of the box with sensible defaults, but you can customize its b
 To use AI-powered features (`enhance` and `update` commands), you need an OpenAI API key:
 
 #### Option 1: Environment Variable
+
 ```bash
 export OPENAI_API_KEY="sk-your-api-key-here"
 ```
 
 #### Option 2: .env File (Recommended)
+
 ```bash
 # Copy the example file
 cp .env.example .env
@@ -189,6 +205,7 @@ OPENAI_API_KEY=sk-your-api-key-here
 ```
 
 #### Getting Your API Key
+
 1. Visit [OpenAI Platform](https://platform.openai.com/api-keys)
 2. Sign up or log in to your account
 3. Create a new API key
@@ -206,6 +223,7 @@ export DOCTOOL_SEVERITY_THRESHOLD="medium"
 ### Ignored Directories
 
 DocTool automatically skips these directories:
+
 - `node_modules/`
 - `.git/`
 - `dist/` and `build/`
@@ -257,6 +275,7 @@ pnpm test:coverage
 ```
 
 **Test Categories:**
+
 - File system validation (22 tests)
 - Link validation (28 tests)
 - AI content generation (16 tests)
@@ -267,6 +286,7 @@ pnpm test:coverage
 ## 📊 Example Output
 
 ### Validation Results
+
 ```
 🔍 DocTool Documentation Validator
 =====================================
@@ -290,6 +310,7 @@ Warnings: 2
 ```
 
 ### Update Results
+
 ```
 🔄 Analyzing documentation issues in: /project
 

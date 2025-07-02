@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
 interface DirectoryInfo {
   name: string;
@@ -12,29 +12,25 @@ interface DirectoryInfo {
 
 // Folders to exclude from knowledge file creation
 const EXCLUDED_FOLDERS = new Set([
-  '.git',
-  'node_modules',
-  '.vscode',
-  '.idea',
-  'dist',
-  'build',
-  'coverage',
-  '.nyc_output',
-  '.next',
-  '.nuxt',
-  'out',
-  'temp',
-  'tmp',
-  '.cache',
-  '.parcel-cache'
+  ".git",
+  "node_modules",
+  ".vscode",
+  ".idea",
+  "dist",
+  "build",
+  "coverage",
+  ".nyc_output",
+  ".next",
+  ".nuxt",
+  "out",
+  "temp",
+  "tmp",
+  ".cache",
+  ".parcel-cache",
 ]);
 
 // Known knowledge file names (in order of preference)
-const KNOWLEDGE_FILE_NAMES = [
-  'KNOWLEDGE.md',
-  'knowledge.md',
-  'README.md'
-];
+const KNOWLEDGE_FILE_NAMES = ["KNOWLEDGE.md", "knowledge.md", "README.md"];
 
 /**
  * Scans a directory and returns information about its contents
@@ -43,14 +39,14 @@ export function scanDirectory(dirPath: string): DirectoryInfo {
   const dirName = path.basename(dirPath);
   const files: string[] = [];
   const subdirectories: string[] = [];
-  
+
   try {
     const items = fs.readdirSync(dirPath, { withFileTypes: true });
-    
+
     for (const item of items) {
       if (item.isFile()) {
         files.push(item.name);
-      } else if (item.isDirectory() && !item.name.startsWith('.')) {
+      } else if (item.isDirectory() && !item.name.startsWith(".")) {
         subdirectories.push(item.name);
       }
     }
@@ -77,26 +73,32 @@ export function scanDirectory(dirPath: string): DirectoryInfo {
     hasKnowledgeFile,
     knowledgeFilePath,
     files,
-    subdirectories
+    subdirectories,
   };
 }
 
 /**
  * Gets all directories recursively that should have knowledge files
  */
-export function getDirectoriesForKnowledgeFiles(basePath: string = process.cwd()): DirectoryInfo[] {
+export function getDirectoriesForKnowledgeFiles(
+  basePath: string = process.cwd(),
+): DirectoryInfo[] {
   const directories: DirectoryInfo[] = [];
-  
+
   function scanRecursively(currentPath: string) {
     try {
       const items = fs.readdirSync(currentPath, { withFileTypes: true });
-      
+
       for (const item of items) {
-        if (item.isDirectory() && !EXCLUDED_FOLDERS.has(item.name) && !item.name.startsWith('.')) {
+        if (
+          item.isDirectory() &&
+          !EXCLUDED_FOLDERS.has(item.name) &&
+          !item.name.startsWith(".")
+        ) {
           const dirPath = path.join(currentPath, item.name);
           const dirInfo = scanDirectory(dirPath);
           directories.push(dirInfo);
-          
+
           // Recursively scan subdirectories
           scanRecursively(dirPath);
         }
@@ -105,10 +107,10 @@ export function getDirectoriesForKnowledgeFiles(basePath: string = process.cwd()
       console.warn(`Warning: Could not read directory ${currentPath}:`, error);
     }
   }
-  
+
   // Start recursive scanning from the base path
   scanRecursively(basePath);
-  
+
   return directories;
 }
 
@@ -116,8 +118,8 @@ export function getDirectoriesForKnowledgeFiles(basePath: string = process.cwd()
  * Creates a knowledge file template for a directory
  */
 export function createKnowledgeFileTemplate(dirInfo: DirectoryInfo): string {
-  const date = new Date().toISOString().split('T')[0];
-  
+  const date = new Date().toISOString().split("T")[0];
+
   return `# ${dirInfo.name}
 
 ## Overview
@@ -127,15 +129,19 @@ This directory contains [brief description of the directory's purpose].
 ## Contents
 
 ### Files
-${dirInfo.files.length > 0 
-  ? dirInfo.files.map(file => `- \`${file}\` - [description]`).join('\n')
-  : '- No files in this directory'
+${
+  dirInfo.files.length > 0
+    ? dirInfo.files.map((file) => `- \`${file}\` - [description]`).join("\n")
+    : "- No files in this directory"
 }
 
 ### Subdirectories
-${dirInfo.subdirectories.length > 0
-  ? dirInfo.subdirectories.map(dir => `- \`${dir}/\` - [description]`).join('\n')
-  : '- No subdirectories'
+${
+  dirInfo.subdirectories.length > 0
+    ? dirInfo.subdirectories
+        .map((dir) => `- \`${dir}/\` - [description]`)
+        .join("\n")
+    : "- No subdirectories"
 }
 
 ## Purpose
@@ -166,15 +172,17 @@ ${dirInfo.subdirectories.length > 0
  */
 export function createKnowledgeFile(dirInfo: DirectoryInfo): boolean {
   if (dirInfo.hasKnowledgeFile) {
-    console.log(`Knowledge file already exists for ${dirInfo.name}: ${dirInfo.knowledgeFilePath}`);
+    console.log(
+      `Knowledge file already exists for ${dirInfo.name}: ${dirInfo.knowledgeFilePath}`,
+    );
     return false;
   }
 
-  const knowledgeFilePath = path.join(dirInfo.path, 'knowledge.md');
+  const knowledgeFilePath = path.join(dirInfo.path, "knowledge.md");
   const template = createKnowledgeFileTemplate(dirInfo);
 
   try {
-    fs.writeFileSync(knowledgeFilePath, template, 'utf8');
+    fs.writeFileSync(knowledgeFilePath, template, "utf8");
     console.log(`Created knowledge file: ${knowledgeFilePath}`);
     return true;
   } catch (error) {
@@ -186,21 +194,23 @@ export function createKnowledgeFile(dirInfo: DirectoryInfo): boolean {
 /**
  * Main function to scan directories and create knowledge files where needed
  */
-export function initializeKnowledgeFiles(basePath: string = process.cwd()): void {
+export function initializeKnowledgeFiles(
+  basePath: string = process.cwd(),
+): void {
   console.log(`Scanning directories in: ${basePath}`);
-  
+
   // First, check and create knowledge file for the root directory itself
   const rootDirInfo = scanDirectory(basePath);
   let createdCount = 0;
   let existingCount = 0;
   let totalDirectories = 1; // Count the root directory
-  
+
   if (createKnowledgeFile(rootDirInfo)) {
     createdCount++;
   } else {
     existingCount++;
   }
-  
+
   // Then scan all subdirectories recursively
   const directories = getDirectoriesForKnowledgeFiles(basePath);
   totalDirectories += directories.length;
@@ -217,8 +227,10 @@ export function initializeKnowledgeFiles(basePath: string = process.cwd()): void
   console.log(`- Directories scanned: ${totalDirectories}`);
   console.log(`- Knowledge files created: ${createdCount}`);
   console.log(`- Knowledge files already existed: ${existingCount}`);
-  
+
   if (createdCount > 0) {
-    console.log(`\nNote: Created knowledge files contain templates. Please update them with relevant information.`);
+    console.log(
+      `\nNote: Created knowledge files contain templates. Please update them with relevant information.`,
+    );
   }
 }

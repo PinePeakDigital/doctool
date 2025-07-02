@@ -1,8 +1,11 @@
 import "dotenv/config";
 import { initializeKnowledgeFiles } from "./utils/knowledgeManager.js";
-import { enhanceKnowledgeFiles, updateKnowledgeFilesWithAI } from "./utils/aiContentGenerator.js";
-import { validateDocs } from './validateDocs.js';
-import { warnIfNoAPIKey, requireValidAPIKey } from './utils/apiKeyValidator.js';
+import {
+  enhanceKnowledgeFiles,
+  updateKnowledgeFilesWithAI,
+} from "./utils/aiContentGenerator.js";
+import { validateDocs } from "./validateDocs.js";
+import { warnIfNoAPIKey, requireValidAPIKey } from "./utils/apiKeyValidator.js";
 
 function showHelp() {
   console.log(`🚀 DocTool CLI
@@ -153,19 +156,23 @@ Examples:
 
 async function runCLI() {
   const args = process.argv.slice(2);
-  const command = args[0] || 'help';
-  
-  // Parse flags and path for all commands  
+  const command = args[0] || "help";
+
+  // Parse flags and path for all commands
   const flags: string[] = [];
   const nonFlagArgs: string[] = [];
-  
+
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    
-    if (arg.startsWith('-')) {
+
+    if (arg.startsWith("-")) {
       flags.push(arg);
       // If this flag might take a value, check the next argument
-      if (arg === '--severity-threshold' && i + 1 < args.length && !args[i + 1].startsWith('-')) {
+      if (
+        arg === "--severity-threshold" &&
+        i + 1 < args.length &&
+        !args[i + 1].startsWith("-")
+      ) {
         flags.push(args[i + 1]);
         i++; // Skip the next argument since we consumed it
       }
@@ -173,15 +180,15 @@ async function runCLI() {
       nonFlagArgs.push(arg);
     }
   }
-  
+
   const targetPath = nonFlagArgs[1] || process.cwd();
 
   console.log("🚀 DocTool CLI");
 
   switch (command) {
-    case 'validate':
+    case "validate":
       // Check for help flag
-      if (flags.includes('--help') || flags.includes('-h')) {
+      if (flags.includes("--help") || flags.includes("-h")) {
         showValidateHelp();
         break;
       }
@@ -189,9 +196,9 @@ async function runCLI() {
       await validateDocs(targetPath);
       break;
 
-    case 'init':
+    case "init":
       // Check for help flag
-      if (flags.includes('--help') || flags.includes('-h')) {
+      if (flags.includes("--help") || flags.includes("-h")) {
         showInitHelp();
         break;
       }
@@ -199,102 +206,118 @@ async function runCLI() {
       initializeKnowledgeFiles(targetPath);
       break;
 
-    case 'enhance':
+    case "enhance":
       // Check for help flag
-      if (flags.includes('--help') || flags.includes('-h')) {
+      if (flags.includes("--help") || flags.includes("-h")) {
         showEnhanceHelp();
         break;
       }
-      
+
       // Check for API key but warn instead of failing
       {
         const hasAPIKey = warnIfNoAPIKey();
         if (!hasAPIKey) {
-          console.log(`\n🤖 Enhancing knowledge files (fallback mode) in: ${targetPath}`);
+          console.log(
+            `\n🤖 Enhancing knowledge files (fallback mode) in: ${targetPath}`,
+          );
         } else {
-          console.log(`\n🤖 Enhancing knowledge files with AI in: ${targetPath}`);
+          console.log(
+            `\n🤖 Enhancing knowledge files with AI in: ${targetPath}`,
+          );
         }
       }
-      
+
       await enhanceKnowledgeFiles(targetPath);
       break;
 
-    case 'update':
+    case "update":
       // Check for help flag
-      if (flags.includes('--help') || flags.includes('-h')) {
+      if (flags.includes("--help") || flags.includes("-h")) {
         showUpdateHelp();
         break;
       }
-      
+
       // Check for API key but warn instead of failing
       {
         const hasUpdateAPIKey = warnIfNoAPIKey();
         if (!hasUpdateAPIKey) {
-          console.log(`\n🔄 Updating knowledge files (fallback mode) in: ${targetPath}`);
+          console.log(
+            `\n🔄 Updating knowledge files (fallback mode) in: ${targetPath}`,
+          );
         } else {
-          console.log(`\n🔄 Updating knowledge files based on changes in: ${targetPath}`);
+          console.log(
+            `\n🔄 Updating knowledge files based on changes in: ${targetPath}`,
+          );
         }
       }
-      
+
       // Parse flags for update command
       {
-        const interactive = flags.includes('--interactive') || flags.includes('-i');
-        const dryRun = flags.includes('--dry-run') || flags.includes('-d');
-        const verbose = flags.includes('--verbose') || flags.includes('-v');
-        
+        const interactive =
+          flags.includes("--interactive") || flags.includes("-i");
+        const dryRun = flags.includes("--dry-run") || flags.includes("-d");
+        const verbose = flags.includes("--verbose") || flags.includes("-v");
+
         // Parse severity threshold
-        let severityThreshold: 'low' | 'medium' | 'high' = 'medium';
-        const severityFlag = flags.find(f => f.startsWith('--severity-threshold='));
+        let severityThreshold: "low" | "medium" | "high" = "medium";
+        const severityFlag = flags.find((f) =>
+          f.startsWith("--severity-threshold="),
+        );
         if (severityFlag) {
-          const value = severityFlag.split('=')[1] as 'low' | 'medium' | 'high';
-          if (['low', 'medium', 'high'].includes(value)) {
+          const value = severityFlag.split("=")[1] as "low" | "medium" | "high";
+          if (["low", "medium", "high"].includes(value)) {
             severityThreshold = value;
           }
         } else {
           // Check for separate flag and value
-          const severityIndex = flags.indexOf('--severity-threshold');
+          const severityIndex = flags.indexOf("--severity-threshold");
           if (severityIndex !== -1 && severityIndex + 1 < flags.length) {
-            const value = flags[severityIndex + 1] as 'low' | 'medium' | 'high';
-            if (['low', 'medium', 'high'].includes(value)) {
+            const value = flags[severityIndex + 1] as "low" | "medium" | "high";
+            if (["low", "medium", "high"].includes(value)) {
               severityThreshold = value;
             }
           }
         }
 
-        await updateKnowledgeFilesWithAI(targetPath, { interactive, dryRun, severityThreshold, verbose });
+        await updateKnowledgeFilesWithAI(targetPath, {
+          interactive,
+          dryRun,
+          severityThreshold,
+          verbose,
+        });
       }
       break;
 
-    case 'agents':
+    case "agents":
       // Check for help flag
-      if (flags.includes('--help') || flags.includes('-h')) {
+      if (flags.includes("--help") || flags.includes("-h")) {
         showAgentsHelp();
         break;
       }
-      
+
       // Require valid API key for agents
       requireValidAPIKey();
-      
+
       console.log(`\n🤖 Starting AI agents...`);
-      
+
       // Dynamic import to avoid startup errors
       try {
-        const { PraisonAIAgents } = await import('praisonai');
-        const { storyAgent, summaryAgent } = await import('./agents/index.js');
-        
+        const { PraisonAIAgents } = await import("praisonai");
+        const { storyAgent, summaryAgent } = await import("./agents/index.js");
+
         const agents = new PraisonAIAgents({
           agents: [storyAgent, summaryAgent],
         });
         agents.start();
       } catch (error) {
-        console.error('❌ Error starting AI agents:', error);
+        console.error("❌ Error starting AI agents:", error);
         console.log(`
 💡 Make sure your OPENAI_API_KEY is set correctly and PraisonAI is properly configured.`);
         process.exit(1);
       }
       break;
 
-    case 'help':
+    case "help":
     default:
       showHelp();
       break;

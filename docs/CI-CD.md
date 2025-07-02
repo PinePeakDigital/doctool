@@ -15,29 +15,34 @@ The project uses GitHub Actions for CI/CD with four main workflows:
 ### 1. Main CI Pipeline (`ci.yml`)
 
 **Triggers:**
+
 - Push to `main` or `develop` branches
 - Pull requests to `main` or `develop` branches
 
 **Jobs:**
 
 #### Lint and Format Check
+
 - Runs TypeScript compiler checks (`tsc --noEmit`)
 - Checks code formatting (when configured)
 - Runs linting rules (when configured)
 
 #### Test Matrix
+
 - Tests across Node.js versions: 18, 20, 22
 - Runs all unit tests with Vitest
 - Generates coverage reports (Node.js 20 only)
 - Uploads coverage to Codecov
 
 #### Integration Tests
+
 - Tests CLI installation and basic functionality
 - Validates `doctool validate` command
 - Tests `doctool enhance` command in dry-run mode
 - Ensures CLI works after global installation
 
 #### Package Validation
+
 - Validates `package.json` structure
 - Tests package creation with `pnpm pack`
 - Checks for sensitive files in package contents
@@ -47,6 +52,7 @@ The project uses GitHub Actions for CI/CD with four main workflows:
 ### 2. Security Scanning (`security.yml`)
 
 **Triggers:**
+
 - Push to `main` or `develop` branches
 - Pull requests to `main` or `develop` branches
 - Weekly schedule (Sundays at 2 AM UTC)
@@ -54,26 +60,31 @@ The project uses GitHub Actions for CI/CD with four main workflows:
 **Security Checks:**
 
 #### Dependency Security
+
 - Runs `pnpm audit` for known vulnerabilities
 - Uses `better-npm-audit` for enhanced reporting
 - Checks for outdated dependencies
 
 #### CodeQL Analysis
+
 - GitHub's semantic code analysis
 - Scans TypeScript code for security issues
 - Uses security-and-quality query suite
 
 #### Secrets Scanning
+
 - Uses TruffleHog to scan for accidentally committed secrets
 - Scans full git history
 - Only reports verified secrets to reduce false positives
 
 #### License Compliance
+
 - Checks all dependency licenses
 - Warns about GPL-style licenses that may require review
 - Generates license summary
 
 #### Supply Chain Security
+
 - Verifies package signatures when possible
 - Checks for common typosquatting targets
 - Generates Software Bill of Materials (SBOM)
@@ -82,9 +93,11 @@ The project uses GitHub Actions for CI/CD with four main workflows:
 ### 3. Package Publishing (`pkg-pr-new.yml`)
 
 **Triggers:**
+
 - All pushes and pull requests
 
 **Purpose:**
+
 - Publishes preview packages using pkg.pr.new
 - Allows testing changes before official release
 - Useful for reviewing PRs with package changes
@@ -125,6 +138,7 @@ NPM_TOKEN=npm_xxxxxxxxxxxxx  # npm authentication token
 ```
 
 To create an npm token:
+
 1. Log in to npmjs.com
 2. Go to Access Tokens in your account settings
 3. Create a new "Automation" token
@@ -190,16 +204,19 @@ Potential CI/CD improvements:
 ### Common Issues
 
 **Tests fail in CI but pass locally:**
+
 - Check Node.js version differences
 - Verify environment variables are available
 - Check for timing-dependent tests
 
 **Security scans fail:**
+
 - Review vulnerability reports
 - Update dependencies to fix issues
 - Consider using `pnpm audit --fix` for automatic fixes
 
 **Package validation fails:**
+
 - Check `.npmignore` or `files` field in package.json
 - Verify all required files are included
 - Test packaging locally with `pnpm pack`

@@ -13,7 +13,7 @@ export interface APIKeyValidationResult {
  */
 export function validateOpenAIKey(): APIKeyValidationResult {
   const apiKey = process.env.OPENAI_API_KEY;
-  
+
   if (!apiKey) {
     return {
       isValid: false,
@@ -33,11 +33,11 @@ To use AI-powered features (enhance, update), you need to set up your OpenAI API
    echo "OPENAI_API_KEY=sk-your-api-key-here" > .env
 
 💡 You can still use the 'validate' and 'init' commands without an API key.
-`
+`,
     };
   }
-  
-  if (!apiKey.startsWith('sk-')) {
+
+  if (!apiKey.startsWith("sk-")) {
     return {
       isValid: false,
       errorMessage: "Invalid OpenAI API key format",
@@ -47,10 +47,10 @@ To use AI-powered features (enhance, update), you need to set up your OpenAI API
 Your OpenAI API key should start with 'sk-'. 
 
 Please check your API key from: https://platform.openai.com/api-keys
-`
+`,
     };
   }
-  
+
   return { isValid: true };
 }
 
@@ -59,7 +59,7 @@ Please check your API key from: https://platform.openai.com/api-keys
  */
 export function requireValidAPIKey(): void {
   const validation = validateOpenAIKey();
-  
+
   if (!validation.isValid) {
     console.error(`❌ ${validation.errorMessage}`);
     console.log(validation.helpMessage);
@@ -72,7 +72,7 @@ export function requireValidAPIKey(): void {
  */
 export function warnIfNoAPIKey(): boolean {
   const validation = validateOpenAIKey();
-  
+
   if (!validation.isValid) {
     console.warn(`⚠️  ${validation.errorMessage}`);
     console.log(`
@@ -81,6 +81,6 @@ ${validation.helpMessage}
 `);
     return false;
   }
-  
+
   return true;
 }

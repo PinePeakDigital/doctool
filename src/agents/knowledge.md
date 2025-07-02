@@ -7,6 +7,7 @@ The agents directory contains AI agent configurations and related functionality 
 ## Contents
 
 ### Files
+
 - `contentGeneratorAgent.ts` - Exports contentGeneratorAgent
 - `index.ts` - Module exporting 4 components
 - `knowledge.md` - Documentation file
@@ -15,6 +16,7 @@ The agents directory contains AI agent configurations and related functionality 
 - `summaryAgent.ts` - Exports summaryAgent
 
 ### Subdirectories
+
 - No subdirectories
 
 ## Purpose
@@ -42,5 +44,5 @@ This directory implements AI-powered automation capabilities, defining agents th
 
 ---
 
-*Last updated: 2025-07-02*
-*Content generated with AI assistance*
+_Last updated: 2025-07-02_
+_Content generated with AI assistance_

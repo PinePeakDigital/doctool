@@ -34,14 +34,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Add TypeScript checking
       - name: TypeScript Check
         run: pnpm tsc --noEmit
 
-      # We'll add these scripts to package.json
       - name: Check formatting
-        run: pnpm format:check || echo "Format check not configured yet"
-        continue-on-error: true
+        run: pnpm format:check
 
       - name: Lint code
         run: pnpm lint

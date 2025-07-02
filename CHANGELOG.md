@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Comprehensive CI/CD pipeline with GitHub Actions
 - Main CI workflow with multi-Node.js version testing
 - Automated release workflow with npm publishing
@@ -19,11 +20,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Supply chain security validation
 
 ### Changed
+
 - Enhanced package.json with additional scripts for CI/CD
 - Improved test coverage and reporting
 - Added provenance support for npm publishing
 
 ### Security
+
 - Added TruffleHog secret scanning
 - Implemented dependency vulnerability checking
 - Added package signature verification
@@ -32,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-07-02
 
 ### Added
+
 - Initial release of doctool CLI
 - AI-powered documentation validation and enhancement
 - File system validator for checking broken links and references
@@ -46,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Node.js wrapper for reliable CLI execution
 
 ### Features
+
 - **Documentation Validation**: Detect broken links, missing files, and invalid references
 - **AI Enhancement**: Improve documentation quality with AI-generated content
 - **Incremental Updates**: Smart updates based on git changes
@@ -56,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Extensible Architecture**: Plugin-ready design for future enhancements
 
 ### Technical Details
+
 - TypeScript implementation with full type safety
 - ES modules with modern Node.js support (>=18.0.0)
 - pnpm package management
@@ -65,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Conventional commits for version management
 
 ### Documentation
+
 - Comprehensive README with installation and usage instructions
 - API documentation for all modules
 - Knowledge files for self-documentation
@@ -72,6 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Development setup instructions
 
 ### Security
+
 - OpenAI API key validation and secure handling
 - No sensitive data in package contents
 - Environment variable best practices
