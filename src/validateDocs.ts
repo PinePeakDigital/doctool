@@ -3,13 +3,15 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { FileSystemValidator } from './utils/fileSystemValidator';
+import { LinkValidator } from './utils/linkValidator';
 
 async function main() {
   console.log('🔍 DocTool Documentation Validator');
   console.log('=====================================\n');
 
   const basePath = process.cwd();
-  const validator = new FileSystemValidator(basePath);
+  const fileValidator = new FileSystemValidator(basePath);
+  const linkValidator = new LinkValidator(basePath);
 
   // Find all knowledge/documentation files
   const docFiles = findDocumentationFiles(basePath);
@@ -23,14 +25,18 @@ async function main() {
     console.log(`📝 Validating: ${path.relative(basePath, docFile)}`);
     
     try {
-      const issues = validator.validateDocumentationFile(docFile);
+      // Run both file system and link validation
+      const fileIssues = fileValidator.validateDocumentationFile(docFile);
+      const linkIssues = await linkValidator.validateDocumentationFile(docFile);
       
-      if (issues.length === 0) {
+      const allIssues = [...fileIssues, ...linkIssues];
+      
+      if (allIssues.length === 0) {
         console.log('   ✅ No issues found\n');
       } else {
-        console.log(`   ⚠️  Found ${issues.length} issue(s):\n`);
+        console.log(`   ⚠️  Found ${allIssues.length} issue(s):\n`);
         
-        issues.forEach((issue, index) => {
+        allIssues.forEach((issue, index) => {
           const severity = getSeverityIcon(issue.severity);
           console.log(`   ${index + 1}. ${severity} ${issue.message}`);
           console.log(`      Location: Line ${issue.location.line}`);
@@ -41,8 +47,8 @@ async function main() {
           console.log('');
         });
 
-        totalIssues += issues.length;
-        criticalIssues += issues.filter(i => i.severity === 'error').length;
+        totalIssues += allIssues.length;
+        criticalIssues += allIssues.filter(i => i.severity === 'error').length;
       }
     } catch (error) {
       console.log(`   ❌ Error validating file: ${error}\n`);
