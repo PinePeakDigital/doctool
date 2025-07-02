@@ -5,11 +5,9 @@ import * as fs from 'fs';
 import { FileSystemValidator } from './utils/fileSystemValidator';
 import { LinkValidator } from './utils/linkValidator';
 
-async function main() {
+export async function validateDocs(basePath: string = process.cwd()) {
   console.log('🔍 DocTool Documentation Validator');
   console.log('=====================================\n');
-
-  const basePath = process.cwd();
   const fileValidator = new FileSystemValidator(basePath);
   const linkValidator = new LinkValidator(basePath);
 
@@ -129,7 +127,14 @@ function getSeverityIcon(severity: string): string {
   }
 }
 
-main().catch(error => {
-  console.error('❌ Validation failed:', error);
-  process.exit(1);
-});
+async function main() {
+  await validateDocs();
+}
+
+// Only run main if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch(error => {
+    console.error('❌ Validation failed:', error);
+    process.exit(1);
+  });
+}

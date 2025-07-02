@@ -9,6 +9,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest --coverage",
     "start": "tsx src/index.ts",
+    "enhance": "tsx src/index.ts enhance",
     "generate:content": "tsx src/generateContent.ts",
     "validate:docs": "tsx src/validateDocs.ts"
   },

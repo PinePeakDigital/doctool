@@ -2,34 +2,43 @@
 
 ## Overview
 
-This directory contains [brief description of the directory's purpose].
+The src directory contains core functionality and implementation files for the application.
 
 ## Contents
 
 ### Files
-- `index.ts` - [description]
+- `generateContent.ts` - Utility functions including main, generateUtilsKnowledgeContent
+- `index.ts` - Utility functions including showHelp, runCLI
+- `knowledge.md` - Documentation file
+- `validateDocs.ts` - Utility functions including validateDocs, findDocumentationFiles, scanDirectory and more
 
 ### Subdirectories
-- `agents/` - [description]
-- `utils/` - [description]
+- No subdirectories
 
 ## Purpose
 
-[Describe the role this directory plays in the overall project]
+This directory plays a key role in the overall project architecture, implementing essential features and business logic.
 
 ## Key Components
 
-[List and describe important files or modules in this directory]
+**generateContent.ts**: Utility functions including main, generateUtilsKnowledgeContent
+
+**index.ts**: Utility functions including showHelp, runCLI
+
+**validateDocs.ts**: Utility functions including validateDocs, findDocumentationFiles, scanDirectory and more
 
 ## Dependencies
 
-[List any dependencies or relationships with other parts of the project]
+- **path**: External dependency
+- **praisonai**: External dependency
+- **fs**: External dependency
 
 ## Notes
 
-[Any additional notes, warnings, or important information]
+- Includes index file for clean imports
+- Includes documentation files
 
 ---
 
-*Created: 2025-06-30*
-*This file was generated automatically and should be updated with relevant information.*
+*Last updated: 2025-07-02*
+*Content generated with AI assistance*
