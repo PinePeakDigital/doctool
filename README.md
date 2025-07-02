@@ -1,5 +1,8 @@
 # DocTool
 
+[![Publish Any Commit](https://github.com/your-username/doctool/actions/workflows/pkg-pr-new.yml/badge.svg)](https://github.com/your-username/doctool/actions/workflows/pkg-pr-new.yml)
+[![pkg.pr.new](https://pkg.pr.new/badge?package=doctool)](https://pkg.pr.new/doctool)
+
 > **AI-powered documentation validation and management system**
 
 DocTool is a comprehensive documentation management tool that combines reliable TypeScript code for system operations with AI-powered content generation and validation. It helps maintain accurate, up-to-date documentation across your entire codebase.
