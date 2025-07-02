@@ -14,10 +14,10 @@ The utils directory contains utility functions and helper modules that support t
 - `contentGenerator.ts` - AI-powered content generation utilities for enhancing knowledge files
 - `diffUtils.test.ts` - Test file for diffUtils.test functionality
 - `diffUtils.ts` - Defines 3 interfaces for type safety
-- `documentationFixer.ts` - TypeScript/JavaScript module containing documentationFixer functionality
-- `documentationIssues.ts` - TypeScript/JavaScript module containing documentationIssues functionality
+- `documentationFixer.ts` - Defines 2 interfaces for type safety
+- `documentationIssues.ts` - Defines 2 interfaces for type safety
 - `fileSystemValidator.test.ts` - Test file for fileSystemValidator.test functionality
-- `fileSystemValidator.ts` - TypeScript/JavaScript module containing fileSystemValidator functionality
+- `fileSystemValidator.ts` - Contains 1 class with core functionality
 - `gitUtils.test.ts` - Test file for gitUtils.test functionality
 - `gitUtils.ts` - TypeScript/JavaScript module containing gitUtils functionality
 - `knowledge.md` - This knowledge file documenting the utils directory

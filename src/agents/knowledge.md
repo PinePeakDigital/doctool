@@ -8,7 +8,7 @@ The agents directory contains AI agent configurations and related functionality 
 
 ### Files
 - `contentGeneratorAgent.ts` - Exports contentGeneratorAgent
-- `index.ts` - TypeScript/JavaScript module containing index functionality
+- `index.ts` - Module exporting 4 components
 - `knowledge.md` - Documentation file
 - `knowledgeManagerAgent.ts` - Exports knowledgeManagerAgent
 - `storyAgent.ts` - Exports storyAgent
