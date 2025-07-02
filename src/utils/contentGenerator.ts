@@ -153,7 +153,14 @@ export async function generateKnowledgeContent(dirPath: string): Promise<string 
     // capture the agent's response more systematically
     const result = await agents.start();
     
-    return result || null;
+    // Convert result to string if it's an array or object
+    if (Array.isArray(result)) {
+      return result.join('\n\n') || null;
+    } else if (typeof result === 'object' && result !== null) {
+      return JSON.stringify(result, null, 2) || null;
+    }
+    
+    return (result as string) || null;
   } catch (error) {
     console.error(`Error generating content for ${dirPath}:`, error);
     return null;

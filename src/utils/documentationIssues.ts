@@ -113,7 +113,7 @@ export function analyzeDocumentationIssues(
     filePath: knowledgeFilePath,
     issues,
     overallHealth,
-    lastUpdated: lastUpdate,
+    lastUpdated: lastUpdate || undefined,
     filesAnalyzed: currentFiles,
     directoryChanges
   };

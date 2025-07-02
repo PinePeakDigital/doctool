@@ -589,8 +589,8 @@ export async function updateKnowledgeFilesWithAI(
           for (const issue of issues.slice(0, 10)) { // Limit to 10 per type to avoid spam
             const severityIcon = issue.severity === 'high' ? '🔴' : issue.severity === 'medium' ? '🟡' : '🟢';
             console.log(`         ${severityIcon} ${issue.description}`);
-            if (issue.suggestion) {
-              console.log(`            💡 ${issue.suggestion}`);
+            if (issue.suggestedFix?.content) {
+              console.log(`            💡 ${issue.suggestedFix.content}`);
             }
           }
           if (issues.length > 10) {

@@ -21,7 +21,13 @@
     "enhance": "tsx src/index.ts enhance",
     "update": "tsx src/index.ts update",
     "generate:content": "tsx src/generateContent.ts",
-    "validate:docs": "tsx src/validateDocs.ts"
+    "validate:docs": "tsx src/validateDocs.ts",
+    "lint": "tsc --noEmit",
+    "lint:fix": "echo 'No linting fixes available yet'",
+    "format": "echo 'Formatting not configured yet'",
+    "format:check": "echo 'Format checking not configured yet'",
+    "build": "echo 'Build step not needed for CLI tool'",
+    "prepublishOnly": "pnpm test && pnpm lint"
   },
   "keywords": [
     "documentation",

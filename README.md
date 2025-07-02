@@ -313,6 +313,33 @@ Fixes skipped: 2
    git commit -m "docs: fix documentation issues"
 ```
 
+## 🚀 CI/CD Integration
+
+This project includes comprehensive CI/CD integration with GitHub Actions:
+
+- **Continuous Integration**: Automated testing across multiple Node.js versions (18, 20, 22)
+- **Security Scanning**: CodeQL analysis, dependency audits, and secret detection
+- **Package Validation**: Ensures package integrity and proper contents
+- **Automated Releases**: Tag-based releases with automatic npm publishing
+- **Preview Packages**: pkg.pr.new integration for testing PRs
+
+For detailed information about the CI/CD setup, see [docs/CI-CD.md](docs/CI-CD.md).
+
+### Status Badges
+
+[![CI](https://github.com/narthur/doctool/workflows/CI/badge.svg)](https://github.com/narthur/doctool/actions)
+[![Security](https://github.com/narthur/doctool/workflows/Security/badge.svg)](https://github.com/narthur/doctool/actions)
+[![npm version](https://badge.fury.io/js/doctool.svg)](https://badge.fury.io/js/doctool)
+
+### Release Process
+
+To create a new release:
+
+1. Update the version in `CHANGELOG.md`
+2. Commit your changes using conventional commits
+3. Create and push a git tag: `git tag v1.2.3 && git push origin v1.2.3`
+4. GitHub Actions will automatically handle the rest!
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please:
