@@ -128,6 +128,10 @@ jobs:
       # Test CLI functionality
       - name: Test CLI installation
         run: |
+          # Setup pnpm global bin directory
+          pnpm setup
+          source ~/.bashrc || true
+          export PATH="$PNPM_HOME:$PATH"
           pnpm link --global
           doctool --help
 
@@ -178,7 +182,10 @@ jobs:
 
       - name: Validate package can be packed
         run: |
-          pnpm pack --dry-run
+          # pnpm pack doesn't have --dry-run, but we can pack and remove
+          pnpm pack
+          ls -la *.tgz
+          rm *.tgz
           echo "Package validation complete"
 
       - name: Check for sensitive files in package
