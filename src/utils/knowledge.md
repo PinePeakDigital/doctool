@@ -7,16 +7,21 @@ The utils directory contains utility functions and helper modules that support t
 ## Contents
 
 ### Files
-- `aiContentGenerator.ts` - TypeScript/JavaScript module containing aiContentGenerator functionality
+- `aiContentGenerator.test.ts` - Test file for aiContentGenerator.test functionality
+- `aiContentGenerator.ts` - Contains 1 class with core functionality
 - `contentGenerator.ts` - AI-powered content generation utilities for enhancing knowledge files
+- `diffUtils.test.ts` - Test file for diffUtils.test functionality
 - `diffUtils.ts` - TypeScript/JavaScript module containing diffUtils functionality
 - `documentationFixer.ts` - TypeScript/JavaScript module containing documentationFixer functionality
 - `documentationIssues.ts` - TypeScript/JavaScript module containing documentationIssues functionality
+- `fileSystemValidator.test.ts` - Test file for fileSystemValidator.test functionality
 - `fileSystemValidator.ts` - TypeScript/JavaScript module containing fileSystemValidator functionality
+- `gitUtils.test.ts` - Test file for gitUtils.test functionality
 - `gitUtils.ts` - TypeScript/JavaScript module containing gitUtils functionality
 - `knowledge.md` - This knowledge file documenting the utils directory
 - `knowledgeManager.test.ts` - Comprehensive test suite for knowledge manager functionality
 - `knowledgeManager.ts` - Core knowledge file management utilities including directory scanning, file creation, and template generation
+- `linkValidator.test.ts` - Test file for linkValidator.test functionality
 - `linkValidator.ts` - TypeScript/JavaScript module containing linkValidator functionality
 
 ### Subdirectories

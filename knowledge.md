@@ -96,6 +96,9 @@ This directory contains [brief description of purpose and functionality].
 
 ### Files
 [File listings will be updated automatically]
+- `README.md` - Documentation file
+- `package.json` - Configuration file
+- `tsconfig.json` - Configuration file
 
 ### Subdirectories
 [Subdirectory listings will be updated automatically]
