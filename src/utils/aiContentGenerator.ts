@@ -535,9 +535,9 @@ export async function analyzeKnowledgeFileForUpdates(filePath: string, basePath:
  */
 export async function updateKnowledgeFilesWithAI(
   basePath: string = process.cwd(), 
-  options: { interactive?: boolean; dryRun?: boolean; severityThreshold?: 'low' | 'medium' | 'high' } = {}
+  options: { interactive?: boolean; dryRun?: boolean; severityThreshold?: 'low' | 'medium' | 'high'; verbose?: boolean } = {}
 ): Promise<void> {
-  const { interactive = false, dryRun = false, severityThreshold = 'medium' } = options;
+  const { interactive = false, dryRun = false, severityThreshold = 'medium', verbose = false } = options;
   
   // Import here to avoid circular dependencies
   const { analyzeDocumentationIssues } = await import('./documentationIssues');
@@ -574,6 +574,30 @@ export async function updateKnowledgeFilesWithAI(
       if (highIssues > 0) console.log(`   🔴 High: ${highIssues} issues`);
       if (mediumIssues > 0) console.log(`   🟡 Medium: ${mediumIssues} issues`);
       if (lowIssues > 0) console.log(`   🟢 Low: ${lowIssues} issues`);
+      
+      // Show detailed issues if verbose mode is enabled
+      if (verbose && analysis.issues.length > 0) {
+        console.log(`\n   📋 Detailed Issues:`);
+        const issuesByType = analysis.issues.reduce((acc, issue) => {
+          if (!acc[issue.type]) acc[issue.type] = [];
+          acc[issue.type].push(issue);
+          return acc;
+        }, {} as Record<string, typeof analysis.issues>);
+        
+        for (const [type, issues] of Object.entries(issuesByType)) {
+          console.log(`\n      ${getIssueTypeIcon(type)} ${type.replace(/_/g, ' ').toUpperCase()}:`);
+          for (const issue of issues.slice(0, 10)) { // Limit to 10 per type to avoid spam
+            const severityIcon = issue.severity === 'high' ? '🔴' : issue.severity === 'medium' ? '🟡' : '🟢';
+            console.log(`         ${severityIcon} ${issue.description}`);
+            if (issue.suggestion) {
+              console.log(`            💡 ${issue.suggestion}`);
+            }
+          }
+          if (issues.length > 10) {
+            console.log(`         ... and ${issues.length - 10} more ${type.replace(/_/g, ' ')} issues`);
+          }
+        }
+      }
       
       // Show directory changes
       if (analysis.directoryChanges.newFiles.length > 0) {
@@ -649,6 +673,18 @@ function getHealthIcon(health: string): string {
 function getSeverityLevel(severity: string): number {
   const levels = { low: 0, medium: 1, high: 2 };
   return levels[severity as keyof typeof levels] || 0;
+}
+
+function getIssueTypeIcon(type: string): string {
+  switch (type.toLowerCase()) {
+    case 'placeholder_content': return '📝';
+    case 'missing_files': return '📄';
+    case 'outdated_descriptions': return '🔄';
+    case 'missing_sections': return '📋';
+    case 'deleted_file_references': return '🗑️';
+    case 'broken_links': return '🔗';
+    default: return '🔸';
+  }
 }
 
 /**

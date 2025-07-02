@@ -34,6 +34,7 @@ Examples:
   doctool update                     # Auto-update, use git to review
   doctool update --interactive       # Prompt before each update
   doctool update --dry-run          # See what would be updated
+  doctool update --verbose           # Show detailed issue information
   doctool agents`);
 }
 
@@ -111,6 +112,7 @@ Arguments:
 Options:
   --interactive, -i        Prompt before each update
   --dry-run, -d           Show what would be updated without making changes
+  --verbose, -v           Show detailed information about issues found
   --severity-threshold     Include fixes at this severity level and above (low|medium|high, default: medium)
   --help, -h              Show this help message
 
@@ -118,7 +120,8 @@ Examples:
   doctool update
   doctool update --interactive
   doctool update --dry-run
-  doctool update --severity-threshold low
+  doctool update --verbose
+  doctool update --verbose --dry-run --severity-threshold low
   doctool update /path/to/project --interactive
   doctool update --help`);
 }
@@ -211,6 +214,7 @@ async function runCLI() {
       // Parse flags for update command
       const interactive = flags.includes('--interactive') || flags.includes('-i');
       const dryRun = flags.includes('--dry-run') || flags.includes('-d');
+      const verbose = flags.includes('--verbose') || flags.includes('-v');
       
       // Parse severity threshold
       let severityThreshold: 'low' | 'medium' | 'high' = 'medium';
@@ -231,7 +235,7 @@ async function runCLI() {
         }
       }
       
-      await updateKnowledgeFilesWithAI(targetPath, { interactive, dryRun, severityThreshold });
+      await updateKnowledgeFilesWithAI(targetPath, { interactive, dryRun, severityThreshold, verbose });
       break;
 
     case 'agents':
