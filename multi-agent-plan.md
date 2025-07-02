@@ -7,7 +7,9 @@ This system breaks down the monolithic documentation review task into specialize
 ## Agent Responsibilities
 
 ### 1. Orchestrator Agent
+
 **Role**: Central coordinator and workflow manager
+
 - Manages the overall workflow sequence
 - Handles agent failures and retries
 - Coordinates inter-agent communication
@@ -15,13 +17,16 @@ This system breaks down the monolithic documentation review task into specialize
 - Decides when to escalate issues or skip problematic files
 
 **Key Functions**:
+
 - `start_review_workflow()`
 - `handle_agent_failure(agent, error)`
 - `coordinate_handoff(from_agent, to_agent, context)`
 - `track_global_progress()`
 
 ### 2. Discovery Agent
+
 **Role**: File system exploration and inventory
+
 - Recursively finds all documentation files
 - Categorizes files by type and priority
 - Creates comprehensive file inventory
@@ -31,7 +36,9 @@ This system breaks down the monolithic documentation review task into specialize
 **Output**: Complete file inventory with metadata
 
 ### 3. Validation Agent
+
 **Role**: Accuracy and completeness verification
+
 - Cross-references documentation with actual code
 - Verifies API documentation against real function signatures
 - Checks that documented features actually exist
@@ -39,13 +46,16 @@ This system breaks down the monolithic documentation review task into specialize
 
 **Tools Used**: File System Tools, Code Analysis Tools, Git Tools
 **Key Validations**:
+
 - Function signatures vs documentation
 - Configuration examples vs actual config schemas
 - Feature descriptions vs implemented code
 - Version information accuracy
 
 ### 4. Link Agent
+
 **Role**: Reference integrity specialist
+
 - Tests all external URLs for availability
 - Verifies internal file references exist
 - Checks cross-references between documentation files
@@ -55,7 +65,9 @@ This system breaks down the monolithic documentation review task into specialize
 **Outputs**: Link health report, updated references
 
 ### 5. Correction Agent
+
 **Role**: Content improvement and standardization
+
 - Fixes identified inaccuracies
 - Updates outdated information
 - Standardizes formatting and terminology
@@ -63,13 +75,16 @@ This system breaks down the monolithic documentation review task into specialize
 
 **Tools Used**: File System Tools, Code Analysis Tools
 **Key Actions**:
+
 - Replace vague statements with specific, linked references
 - Update version numbers and dependency info
 - Standardize code block formatting
 - Add missing documentation for undocumented features
 
 ### 6. Reporting Agent
+
 **Role**: Documentation and summary generation
+
 - Compiles all changes made across agents
 - Generates comprehensive review report
 - Creates actionable recommendations
@@ -80,6 +95,7 @@ This system breaks down the monolithic documentation review task into specialize
 ## Tools Architecture
 
 ### File System Tools
+
 - `find_files(patterns, exclude_patterns)`: Recursive file discovery
 - `read_file(path)`: Safe file reading with encoding detection
 - `write_file(path, content)`: Atomic file writing
@@ -87,12 +103,14 @@ This system breaks down the monolithic documentation review task into specialize
 - `get_file_metadata(path)`: File stats and properties
 
 ### Git Tools
+
 - `get_file_history(path)`: Commit history for documentation files
 - `get_commit_info(hash)`: Detailed commit information
 - `check_file_status(path)`: Current git status of file
 - `get_recent_changes(since_date)`: Recent repository activity
 
 ### Code Analysis Tools
+
 - `parse_code(file_path)`: AST parsing for various languages
 - `find_functions(code_ast)`: Function/method extraction
 - `get_imports(code_ast)`: Dependency analysis
@@ -100,6 +118,7 @@ This system breaks down the monolithic documentation review task into specialize
 - `extract_api_signatures()`: API documentation verification
 
 ### Link Validation Tools
+
 - `validate_urls(url_list)`: Batch URL health checking
 - `check_internal_links(base_path, links)`: Internal reference validation
 - `verify_file_paths(paths)`: File existence verification

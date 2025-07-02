@@ -7,12 +7,14 @@ The src directory contains core functionality and implementation files for the a
 ## Contents
 
 ### Files
+
 - `generateContent.ts` - Utility functions including main, generateUtilsKnowledgeContent
 - `index.ts` - Utility functions including showHelp, runCLI
 - `knowledge.md` - Documentation file
 - `validateDocs.ts` - Utility functions including validateDocs, findDocumentationFiles, scanDirectory and more
 
 ### Subdirectories
+
 - No subdirectories
 
 ## Purpose
@@ -40,5 +42,5 @@ This directory plays a key role in the overall project architecture, implementin
 
 ---
 
-*Last updated: 2025-07-02*
-*Content generated with AI assistance*
+_Last updated: 2025-07-02_
+_Content generated with AI assistance_

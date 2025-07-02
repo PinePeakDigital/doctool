@@ -7,6 +7,7 @@ The utils directory contains utility functions and helper modules that support t
 ## Contents
 
 ### Files
+
 - `aiContentGenerator.test.ts` - Test file for aiContentGenerator.test functionality
 - `aiContentGenerator.ts` - Contains 1 class with core functionality
 - `apiKeyValidator.test.ts` - Test file for apiKeyValidator.test functionality
@@ -27,6 +28,7 @@ The utils directory contains utility functions and helper modules that support t
 - `linkValidator.ts` - TypeScript/JavaScript module containing linkValidator functionality
 
 ### Subdirectories
+
 - No subdirectories
 
 ## Purpose
@@ -36,6 +38,7 @@ The utils directory serves as the foundation for DocTool's knowledge management 
 ## Key Components
 
 ### knowledgeManager.ts
+
 - **Directory Scanning**: Recursively finds directories that need knowledge files
 - **File Detection**: Identifies existing knowledge files (KNOWLEDGE.md, knowledge.md, README.md)
 - **Template Generation**: Creates standardized knowledge file templates
@@ -43,6 +46,7 @@ The utils directory serves as the foundation for DocTool's knowledge management 
 - **Exclusion Logic**: Skips system directories (.git, node_modules, etc.)
 
 **Key Functions**:
+
 - `scanDirectory()` - Analyzes directory contents
 - `getDirectoriesForKnowledgeFiles()` - Recursive directory discovery
 - `createKnowledgeFileTemplate()` - Generates templates
@@ -50,12 +54,14 @@ The utils directory serves as the foundation for DocTool's knowledge management 
 - `initializeKnowledgeFiles()` - Main orchestration function
 
 ### contentGenerator.ts
+
 - **Code Analysis**: Examines TypeScript/JavaScript files for documentation
 - **AI Integration**: Interfaces with PraisonAI agents for content generation
 - **Prompt Engineering**: Creates detailed prompts for AI content generation
 - **File Enhancement**: Updates existing knowledge files with AI-generated content
 
 **Key Functions**:
+
 - `analyzeDirectoryForContent()` - Gathers directory information
 - `getCodeContent()` - Reads and processes code files
 - `createContentGenerationPrompt()` - Builds AI prompts
@@ -63,20 +69,22 @@ The utils directory serves as the foundation for DocTool's knowledge management 
 - `updateKnowledgeFile()` - Updates files with new content
 
 ### Testing
+
 - Comprehensive test coverage using Vitest
 - Isolated testing with temporary directories
 - Tests cover all major functions and edge cases
 - Colocated test files for easy maintenance
 
-
 ## Dependencies
 
 ### External Dependencies
+
 - **Node.js fs/path modules**: File system operations
 - **PraisonAI**: AI agent integration for content generation
 - **Vitest**: Testing framework
 
 ### Internal Dependencies
+
 - **src/agents/contentGeneratorAgent**: AI agent for content generation
 - **Main application**: Used by src/index.ts for knowledge file initialization
 
@@ -91,11 +99,12 @@ The utils directory serves as the foundation for DocTool's knowledge management 
 ## Architecture Principles
 
 This directory exemplifies DocTool's hybrid approach:
+
 - **Reliable Code**: File system operations, directory scanning, error handling
 - **AI Enhancement**: Content generation, analysis, and documentation improvement
 - **Separation of Concerns**: Clear boundaries between system operations and AI tasks
 
 ---
 
-*Last updated: 2025-07-02*
-*Content generated with AI assistance*
+_Last updated: 2025-07-02_
+_Content generated with AI assistance_
