@@ -254,12 +254,6 @@ async function runCLI() {
           if (['low', 'medium', 'high'].includes(value)) {
             severityThreshold = value;
           }
-        } else if (process.env.DOCTOOL_SEVERITY_THRESHOLD) {
-          // Check if severity threshold is set via environment variable
-          const envValue = process.env.DOCTOOL_SEVERITY_THRESHOLD;
-          if (['low', 'medium', 'high'].includes(envValue)) {
-            severityThreshold = envValue as 'low' | 'medium' | 'high';
-          }
         }
       }
 
