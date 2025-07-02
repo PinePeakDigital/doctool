@@ -7,7 +7,8 @@ import { enhanceKnowledgeFiles, updateKnowledgeFilesWithAI } from "./utils/aiCon
 import { validateDocs } from "./validateDocs";
 
 function showHelp() {
-  console.log(`
+  console.log(`🚀 DocTool CLI
+
 DocTool - Documentation validation and management tool
 
 Usage:
@@ -34,6 +35,111 @@ Examples:
   doctool update --interactive       # Prompt before each update
   doctool update --dry-run          # See what would be updated
   doctool agents`);
+}
+
+function showValidateHelp() {
+  console.log(`🔍 DocTool Validate Command
+
+Validates documentation files for broken links, missing references, and content issues.
+
+Usage:
+  doctool validate [path] [options]
+
+Arguments:
+  path              Path to validate (default: current directory)
+
+Options:
+  --help, -h        Show this help message
+
+Examples:
+  doctool validate
+  doctool validate /path/to/docs
+  doctool validate --help`);
+}
+
+function showInitHelp() {
+  console.log(`📚 DocTool Init Command
+
+Initializes knowledge files across your project directories.
+
+Usage:
+  doctool init [path] [options]
+
+Arguments:
+  path              Path to initialize (default: current directory)
+
+Options:
+  --help, -h        Show this help message
+
+Examples:
+  doctool init
+  doctool init /path/to/project
+  doctool init --help`);
+}
+
+function showEnhanceHelp() {
+  console.log(`🤖 DocTool Enhance Command
+
+Enhances knowledge files with AI-generated content.
+
+Usage:
+  doctool enhance [path] [options]
+
+Arguments:
+  path              Path to enhance (default: current directory)
+
+Options:
+  --help, -h        Show this help message
+
+Examples:
+  doctool enhance
+  doctool enhance /path/to/project
+  doctool enhance --help`);
+}
+
+function showUpdateHelp() {
+  console.log(`🔄 DocTool Update Command
+
+Updates documentation using issue-driven targeted fixes.
+
+Usage:
+  doctool update [path] [options]
+
+Arguments:
+  path              Path to update (default: current directory)
+
+Options:
+  --interactive, -i        Prompt before each update
+  --dry-run, -d           Show what would be updated without making changes
+  --severity-threshold     Include fixes at this severity level and above (low|medium|high, default: medium)
+  --help, -h              Show this help message
+
+Examples:
+  doctool update
+  doctool update --interactive
+  doctool update --dry-run
+  doctool update --severity-threshold low
+  doctool update /path/to/project --interactive
+  doctool update --help`);
+}
+
+function showAgentsHelp() {
+  console.log(`🤖 DocTool Agents Command
+
+Starts AI agents for advanced documentation processing.
+
+Usage:
+  doctool agents [options]
+
+Options:
+  --help, -h        Show this help message
+
+Note:
+  This command requires PraisonAI to be properly configured.
+
+Examples:
+  doctool agents
+  doctool agents --help`);
 }
 
 async function runCLI() {
@@ -65,21 +171,41 @@ async function runCLI() {
 
   switch (command) {
     case 'validate':
+      // Check for help flag
+      if (flags.includes('--help') || flags.includes('-h')) {
+        showValidateHelp();
+        break;
+      }
       console.log(`\n📋 Validating documentation in: ${targetPath}`);
       await validateDocs(targetPath);
       break;
 
     case 'init':
+      // Check for help flag
+      if (flags.includes('--help') || flags.includes('-h')) {
+        showInitHelp();
+        break;
+      }
       console.log(`\n📚 Initializing knowledge files in: ${targetPath}`);
       initializeKnowledgeFiles(targetPath);
       break;
 
     case 'enhance':
+      // Check for help flag
+      if (flags.includes('--help') || flags.includes('-h')) {
+        showEnhanceHelp();
+        break;
+      }
       console.log(`\n🤖 Enhancing knowledge files with AI in: ${targetPath}`);
       await enhanceKnowledgeFiles(targetPath);
       break;
 
     case 'update':
+      // Check for help flag
+      if (flags.includes('--help') || flags.includes('-h')) {
+        showUpdateHelp();
+        break;
+      }
       console.log(`\n🔄 Updating knowledge files based on changes in: ${targetPath}`);
       
       // Parse flags for update command
@@ -109,6 +235,11 @@ async function runCLI() {
       break;
 
     case 'agents':
+      // Check for help flag
+      if (flags.includes('--help') || flags.includes('-h')) {
+        showAgentsHelp();
+        break;
+      }
       console.log(`\n🤖 Starting AI agents...`);
       const agents = new PraisonAIAgents({
         agents: [storyAgent, summaryAgent],
