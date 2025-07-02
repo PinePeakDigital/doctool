@@ -1,10 +1,10 @@
 #!/usr/bin/env tsx
-import { PraisonAIAgents } from "praisonai";
 import "dotenv/config";
-import { storyAgent, summaryAgent } from "./agents";
+import { validateOpenAIKey } from "./utils/apiKeyValidator";
 import { initializeKnowledgeFiles } from "./utils/knowledgeManager";
 import { enhanceKnowledgeFiles, updateKnowledgeFilesWithAI } from "./utils/aiContentGenerator";
 import { validateDocs } from "./validateDocs";
+import { warnIfNoAPIKey, requireValidAPIKey } from "./utils/apiKeyValidator";
 
 function showHelp() {
   console.log(`🚀 DocTool CLI
@@ -92,6 +92,10 @@ Arguments:
 Options:
   --help, -h        Show this help message
 
+API Key:
+  Requires OPENAI_API_KEY environment variable for AI features.
+  Falls back to intelligent content generation if not set.
+
 Examples:
   doctool enhance
   doctool enhance /path/to/project
@@ -115,6 +119,10 @@ Options:
   --verbose, -v           Show detailed information about issues found
   --severity-threshold     Include fixes at this severity level and above (low|medium|high, default: medium)
   --help, -h              Show this help message
+
+API Key:
+  Requires OPENAI_API_KEY environment variable for AI features.
+  Falls back to intelligent content generation if not set.
 
 Examples:
   doctool update
@@ -199,7 +207,15 @@ async function runCLI() {
         showEnhanceHelp();
         break;
       }
-      console.log(`\n🤖 Enhancing knowledge files with AI in: ${targetPath}`);
+      
+      // Check for API key but warn instead of failing
+      const hasAPIKey = warnIfNoAPIKey();
+      if (!hasAPIKey) {
+        console.log(`\n🤖 Enhancing knowledge files (fallback mode) in: ${targetPath}`);
+      } else {
+        console.log(`\n🤖 Enhancing knowledge files with AI in: ${targetPath}`);
+      }
+      
       await enhanceKnowledgeFiles(targetPath);
       break;
 
@@ -209,7 +225,14 @@ async function runCLI() {
         showUpdateHelp();
         break;
       }
-      console.log(`\n🔄 Updating knowledge files based on changes in: ${targetPath}`);
+      
+      // Check for API key but warn instead of failing
+      const hasUpdateAPIKey = warnIfNoAPIKey();
+      if (!hasUpdateAPIKey) {
+        console.log(`\n🔄 Updating knowledge files (fallback mode) in: ${targetPath}`);
+      } else {
+        console.log(`\n🔄 Updating knowledge files based on changes in: ${targetPath}`);
+      }
       
       // Parse flags for update command
       const interactive = flags.includes('--interactive') || flags.includes('-i');
@@ -244,11 +267,27 @@ async function runCLI() {
         showAgentsHelp();
         break;
       }
+      
+      // Require valid API key for agents
+      requireValidAPIKey();
+      
       console.log(`\n🤖 Starting AI agents...`);
-      const agents = new PraisonAIAgents({
-        agents: [storyAgent, summaryAgent],
-      });
-      agents.start();
+      
+      // Dynamic import to avoid startup errors
+      try {
+        const { PraisonAIAgents } = await import('praisonai');
+        const { storyAgent, summaryAgent } = await import('./agents');
+        
+        const agents = new PraisonAIAgents({
+          agents: [storyAgent, summaryAgent],
+        });
+        agents.start();
+      } catch (error) {
+        console.error('❌ Error starting AI agents:', error);
+        console.log(`
+💡 Make sure your OPENAI_API_KEY is set correctly and PraisonAI is properly configured.`);
+        process.exit(1);
+      }
       break;
 
     case 'help':

@@ -30,6 +30,16 @@ DocTool is a comprehensive documentation management tool that combines reliable 
 
 ### Installation
 
+#### Option 1: From Package (Recommended)
+```bash
+# Install globally from npm
+npm install -g doctool
+
+# Or install locally in your project
+npm install --save-dev doctool
+```
+
+#### Option 2: From Source
 ```bash
 # Clone the repository
 git clone https://github.com/your-username/doctool.git
@@ -160,12 +170,35 @@ npm install -g https://pkg.pr.new/doctool@sha-abc1234
 
 DocTool works out of the box with sensible defaults, but you can customize its behavior:
 
-### Environment Variables
+### API Key Setup (Required for AI Features)
+
+To use AI-powered features (`enhance` and `update` commands), you need an OpenAI API key:
+
+#### Option 1: Environment Variable
+```bash
+export OPENAI_API_KEY="sk-your-api-key-here"
+```
+
+#### Option 2: .env File (Recommended)
+```bash
+# Copy the example file
+cp .env.example .env
+
+# Edit .env and add your API key
+OPENAI_API_KEY=sk-your-api-key-here
+```
+
+#### Getting Your API Key
+1. Visit [OpenAI Platform](https://platform.openai.com/api-keys)
+2. Sign up or log in to your account
+3. Create a new API key
+4. Copy the key (starts with `sk-`)
+
+> ⚠️ **Important**: Keep your API key secure and never commit it to version control!
+
+### Other Environment Variables
 
 ```bash
-# Optional: Configure AI provider settings
-export OPENAI_API_KEY="your-api-key-here"
-
 # Optional: Custom validation rules
 export DOCTOOL_SEVERITY_THRESHOLD="medium"
 ```
