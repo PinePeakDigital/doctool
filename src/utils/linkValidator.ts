@@ -288,9 +288,7 @@ export class LinkValidator {
   /**
    * Validates HTTP/HTTPS URLs
    */
-  private async validateHttpUrl(
-    link: LinkReference,
-  ): Promise<{
+  private async validateHttpUrl(link: LinkReference): Promise<{
     valid: boolean;
     error?: string;
     response_code?: number;
