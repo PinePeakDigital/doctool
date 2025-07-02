@@ -61,7 +61,6 @@
   "homepage": "https://github.com/narthur/doctool#readme",
   "packageManager": "pnpm@10.6.1",
   "dependencies": {
-    "doctool": "link:",
     "dotenv": "^17.0.1",
     "praisonai": "^1.0.19",
     "tsx": "^4.20.3",
@@ -71,10 +70,5 @@
     "@types/node": "^24.0.10",
     "@vitest/coverage-v8": "^3.2.4",
     "vitest": "^3.2.4"
-  },
-  "pnpm": {
-    "overrides": {
-      "doctool": "link:"
-    }
   }
 }
