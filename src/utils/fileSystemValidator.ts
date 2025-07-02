@@ -134,7 +134,7 @@ export class FileSystemValidator {
       }
 
       // 3. Directory references in text: "src/utils/" or "the config/ directory"
-      const directoryRegex = /(?:^|\s)([\w\-\.]+(?:\/[\w\-\.]+)*\/?)(?=\s|$|[,.])/g;
+      const directoryRegex = /(?:^|\s)([\w\-.]+(?:\/[\w\-.]+)*\/?)(?=\s|$|[,.])/g;
       while ((match = directoryRegex.exec(line)) !== null) {
         const possiblePath = match[1];
         if (this.looksLikeDirectoryPath(possiblePath) && possiblePath.length > 2) {
@@ -229,7 +229,7 @@ export class FileSystemValidator {
           line.includes('├──') || 
           line.includes('└──') || 
           line.includes('│') ||
-          /^[\s]*[\w\-\.]+\/?$/.test(trimmedLine)
+          /^[\s]*[\w\-.]+\/?$/.test(trimmedLine)
         )) {
         currentClaim.push(line);
       }
@@ -273,7 +273,7 @@ export class FileSystemValidator {
           file_reference: fileRef
         });
       }
-    } catch (error) {
+    } catch {
       fileRef.exists = false;
       
       if (fileRef.type === 'file') {
@@ -335,7 +335,7 @@ export class FileSystemValidator {
       // Note: We don't flag extra files as issues since documentation
       // doesn't need to be exhaustive
       
-    } catch (error) {
+    } catch {
       issues.push({
         type: 'invalid_path',
         severity: 'error',
@@ -414,7 +414,7 @@ export class FileSystemValidator {
       if (similar.length > 0) {
         return `Did you mean: ${similar.slice(0, 3).join(', ')}?`;
       }
-    } catch (error) {
+    } catch {
       // Directory doesn't exist
     }
     return 'Check if the file path is correct and the file exists.';
@@ -436,7 +436,7 @@ export class FileSystemValidator {
       if (similar.length > 0) {
         return `Did you mean: ${similar.slice(0, 3).join(', ')}?`;
       }
-    } catch (error) {
+    } catch {
       // Parent directory doesn't exist
     }
     return 'Check if the directory path is correct and the directory exists.';
@@ -465,7 +465,7 @@ export class FileSystemValidator {
             traverse(path.join(currentPath, item.name), itemPath);
           }
         }
-      } catch (error) {
+      } catch {
         // Skip directories we can't read
       }
     }

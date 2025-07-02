@@ -84,7 +84,7 @@ function findDocumentationFiles(basePath: string): string[] {
           scanDirectory(fullPath);
         }
       }
-    } catch (error) {
+    } catch {
       // Skip directories we can't read
     }
   }

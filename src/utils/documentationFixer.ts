@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { DocumentationIssue, DocumentationAnalysis } from './documentationIssues.js';
-import { parseMarkdownSections, ContentSection } from './diffUtils.js';
+// import { parseMarkdownSections, ContentSection } from './diffUtils.js';
 
 export interface FixResult {
   issue: DocumentationIssue;
@@ -35,7 +35,7 @@ export function applyDocumentationFixes(
   let content = '';
   try {
     content = fs.readFileSync(analysis.filePath, 'utf8');
-  } catch (error) {
+  } catch {
     content = '';
   }
   
@@ -92,7 +92,7 @@ function applyIssuseFix(
   content: string,
   options: { dryRun?: boolean; autoApprove?: boolean }
 ): FixResult {
-  const { dryRun = false, autoApprove = true } = options;
+  const { autoApprove = true } = options;
   
   if (!autoApprove) {
     // In interactive mode, would prompt user here
