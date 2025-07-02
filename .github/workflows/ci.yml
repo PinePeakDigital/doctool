@@ -2,15 +2,15 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   lint-and-format:
     runs-on: ubuntu-latest
     name: Lint and Format Check
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,8 +44,7 @@ jobs:
         continue-on-error: true
 
       - name: Lint code
-        run: pnpm lint || echo "Linting not configured yet"
-        continue-on-error: true
+        run: pnpm lint
 
   test:
     runs-on: ubuntu-latest
@@ -53,7 +52,7 @@ jobs:
       matrix:
         node-version: [18, 20, 22]
     name: Test (Node.js ${{ matrix.node-version }})
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -101,7 +100,7 @@ jobs:
   integration-test:
     runs-on: ubuntu-latest
     name: Integration Tests
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -135,14 +134,14 @@ jobs:
           mkdir -p ~/.local/share/pnpm
           export PNPM_HOME="$HOME/.local/share/pnpm"
           export PATH="$PNPM_HOME:$PATH"
-          
+
           # Set up pnpm environment
           pnpm config set global-bin-dir "$PNPM_HOME"
           pnpm config set global-dir "$HOME/.local/share/pnpm/global"
-          
+
           # Link the package globally
           pnpm link --global
-          
+
           # Test the CLI
           doctool --help
 
@@ -151,7 +150,7 @@ jobs:
           # Set up PATH with pnpm global bin
           export PNPM_HOME="$HOME/.local/share/pnpm"
           export PATH="$PNPM_HOME:$PATH"
-          
+
           echo "# Test Document" > test.md
           echo "This is a [broken link](./nonexistent.md)" >> test.md
           doctool validate test.md || echo "Expected validation to find issues"
@@ -161,7 +160,7 @@ jobs:
           # Set up PATH with pnpm global bin
           export PNPM_HOME="$HOME/.local/share/pnpm"
           export PATH="$PNPM_HOME:$PATH"
-          
+
           # Create a basic test document
           mkdir -p test-docs
           echo "# Test Project" > test-docs/README.md
@@ -172,7 +171,7 @@ jobs:
   package-validation:
     runs-on: ubuntu-latest
     name: Package Validation
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -215,19 +214,19 @@ jobs:
           # Create a test pack and check contents
           pnpm pack
           tar -tf doctool-*.tgz | tee package-contents.txt
-          
+
           # Check for unwanted files
           if grep -E '\.(env|secret|key)$' package-contents.txt; then
             echo "Warning: Sensitive files found in package"
             exit 1
           fi
-          
+
           # Check for required files
           if ! grep -q "package/README.md" package-contents.txt; then
             echo "Error: README.md missing from package"
             exit 1
           fi
-          
+
           if ! grep -q "package/dist/src/bin/doctool.js" package-contents.txt; then
             echo "Error: CLI binary missing from package"
             exit 1
@@ -238,18 +237,18 @@ jobs:
           # Test installing the packed package
           pnpm pack
           PACKAGE_FILE=$(ls doctool-*.tgz)
-          
+
           # Set up proper npm global path for CI
           export NPM_CONFIG_PREFIX="$HOME/.npm-global"
           export PATH="$HOME/.npm-global/bin:$PATH"
           mkdir -p "$HOME/.npm-global"
-          
+
           # Install the package globally
           npm install -g "$PACKAGE_FILE"
-          
+
           # Verify the CLI binary exists and is executable
           which doctool || echo "doctool not found in PATH"
           ls -la "$HOME/.npm-global/bin/" || echo "No global bin directory"
-          
+
           # Test that the CLI works after installation
           doctool --help
