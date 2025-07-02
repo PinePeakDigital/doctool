@@ -7,9 +7,8 @@ This document describes the Continuous Integration and Continuous Deployment (CI
 The project uses GitHub Actions for CI/CD with four main workflows:
 
 1. **Main CI Pipeline** (`.github/workflows/ci.yml`)
-2. **Release Pipeline** (`.github/workflows/release.yml`)
-3. **Security Scanning** (`.github/workflows/security.yml`)
-4. **Package Publishing** (`.github/workflows/pkg-pr-new.yml`)
+2. **Security Scanning** (`.github/workflows/security.yml`)
+3. **Package Publishing** (`.github/workflows/pkg-pr-new.yml`)
 
 ## Workflows
 
@@ -45,25 +44,7 @@ The project uses GitHub Actions for CI/CD with four main workflows:
 - Verifies required files are included
 - Tests package installation from tarball
 
-### 2. Release Pipeline (`release.yml`)
-
-**Triggers:**
-- Git tags matching `v*.*.*` pattern (e.g., `v1.0.0`, `v2.1.3`)
-
-**Process:**
-1. Runs full test suite and validation
-2. Extracts version from git tag
-3. Updates `package.json` version to match tag
-4. Creates GitHub release with changelog
-5. Publishes to npm with provenance
-6. Uploads package tarball as release asset
-7. Notifies of successful release
-
-**Requirements:**
-- `NPM_TOKEN` secret must be configured in GitHub repository settings
-- Tags should follow semantic versioning (`v1.2.3`)
-
-### 3. Security Scanning (`security.yml`)
+### 2. Security Scanning (`security.yml`)
 
 **Triggers:**
 - Push to `main` or `develop` branches
@@ -98,7 +79,7 @@ The project uses GitHub Actions for CI/CD with four main workflows:
 - Generates Software Bill of Materials (SBOM)
 - Uploads SBOM as artifact for compliance
 
-### 4. Package Publishing (`pkg-pr-new.yml`)
+### 3. Package Publishing (`pkg-pr-new.yml`)
 
 **Triggers:**
 - All pushes and pull requests
@@ -164,20 +145,6 @@ Recommended branch protection rules for `main`:
 - Require up-to-date branches before merging
 - Require review from code owners
 
-### 3. Release Process
-
-To create a new release:
-
-1. Update version in `package.json` (optional, will be done automatically)
-2. Update `CHANGELOG.md` with release notes
-3. Commit changes: `git commit -m "chore: prepare v1.2.3 release"`
-4. Create and push tag: `git tag v1.2.3 && git push origin v1.2.3`
-5. Release workflow will automatically:
-   - Run all tests
-   - Create GitHub release
-   - Publish to npm
-   - Upload package assets
-
 ## Monitoring and Debugging
 
 ### GitHub Actions
@@ -226,11 +193,6 @@ Potential CI/CD improvements:
 - Check Node.js version differences
 - Verify environment variables are available
 - Check for timing-dependent tests
-
-**Release workflow fails:**
-- Verify `NPM_TOKEN` is valid and has publish permissions
-- Ensure tag follows semantic versioning
-- Check package.json has correct package name
 
 **Security scans fail:**
 - Review vulnerability reports
