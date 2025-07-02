@@ -128,21 +128,37 @@ jobs:
       # Test CLI functionality
       - name: Test CLI installation
         run: |
-          # Setup pnpm global bin directory
-          pnpm setup
-          source ~/.bashrc || true
+          # Create a proper global bin directory for pnpm
+          mkdir -p ~/.local/share/pnpm
+          export PNPM_HOME="$HOME/.local/share/pnpm"
           export PATH="$PNPM_HOME:$PATH"
+          
+          # Set up pnpm environment
+          pnpm config set global-bin-dir "$PNPM_HOME"
+          pnpm config set global-dir "$HOME/.local/share/pnpm/global"
+          
+          # Link the package globally
           pnpm link --global
+          
+          # Test the CLI
           doctool --help
 
       - name: Test CLI validate command
         run: |
+          # Set up PATH with pnpm global bin
+          export PNPM_HOME="$HOME/.local/share/pnpm"
+          export PATH="$PNPM_HOME:$PATH"
+          
           echo "# Test Document" > test.md
           echo "This is a [broken link](./nonexistent.md)" >> test.md
           doctool validate test.md || echo "Expected validation to find issues"
 
       - name: Test CLI enhance command (dry run)
         run: |
+          # Set up PATH with pnpm global bin
+          export PNPM_HOME="$HOME/.local/share/pnpm"
+          export PATH="$PNPM_HOME:$PATH"
+          
           # Create a basic test document
           mkdir -p test-docs
           echo "# Test Project" > test-docs/README.md
@@ -216,7 +232,18 @@ jobs:
           # Test installing the packed package
           pnpm pack
           PACKAGE_FILE=$(ls doctool-*.tgz)
+          
+          # Set up proper npm global path for CI
+          export NPM_CONFIG_PREFIX="$HOME/.npm-global"
+          export PATH="$HOME/.npm-global/bin:$PATH"
+          mkdir -p "$HOME/.npm-global"
+          
+          # Install the package globally
           npm install -g "$PACKAGE_FILE"
+          
+          # Verify the CLI binary exists and is executable
+          which doctool || echo "doctool not found in PATH"
+          ls -la "$HOME/.npm-global/bin/" || echo "No global bin directory"
           
           # Test that the CLI works after installation
           doctool --help
