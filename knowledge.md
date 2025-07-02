@@ -87,7 +87,23 @@ doctool/
 - [`validation-roadmap.md`](./validation-roadmap.md) - Technical implementation roadmap
 - [`multi-agent-plan.md`](./multi-agent-plan.md) - System architecture for multi-agent documentation review
 
+
+## Overview
+
+This directory contains [brief description of purpose and functionality].
+
+## Contents
+
+### Files
+[File listings will be updated automatically]
+
+### Subdirectories
+[Subdirectory listings will be updated automatically]
+
+## Purpose
+
+This directory serves [specific role in the project architecture].
 ---
 
-*Last updated: 2025-06-30*
+*Last updated: 2025-07-02*
 *This knowledge file follows the project's principle of using AI for content generation while relying on regular code for system operations.*

@@ -7,10 +7,17 @@ The utils directory contains utility functions and helper modules that support t
 ## Contents
 
 ### Files
+- `aiContentGenerator.ts` - TypeScript/JavaScript module containing aiContentGenerator functionality
 - `contentGenerator.ts` - AI-powered content generation utilities for enhancing knowledge files
+- `diffUtils.ts` - TypeScript/JavaScript module containing diffUtils functionality
+- `documentationFixer.ts` - TypeScript/JavaScript module containing documentationFixer functionality
+- `documentationIssues.ts` - TypeScript/JavaScript module containing documentationIssues functionality
+- `fileSystemValidator.ts` - TypeScript/JavaScript module containing fileSystemValidator functionality
+- `gitUtils.ts` - TypeScript/JavaScript module containing gitUtils functionality
 - `knowledge.md` - This knowledge file documenting the utils directory
 - `knowledgeManager.test.ts` - Comprehensive test suite for knowledge manager functionality
 - `knowledgeManager.ts` - Core knowledge file management utilities including directory scanning, file creation, and template generation
+- `linkValidator.ts` - TypeScript/JavaScript module containing linkValidator functionality
 
 ### Subdirectories
 - No subdirectories
@@ -83,5 +90,5 @@ This directory exemplifies DocTool's hybrid approach:
 
 ---
 
-*Last updated: 2025-06-30*
+*Last updated: 2025-07-02*
 *Content generated with AI assistance*
