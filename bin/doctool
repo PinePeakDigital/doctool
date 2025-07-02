@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+// DocTool CLI wrapper script
+import { spawn } from 'child_process';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// Project directory - hardcoded for npm link to work
+const projectDir = '/mnt/backup/ProgrammingProjects/doctool';
+const indexPath = path.join(projectDir, 'src', 'index.ts');
+const tsxPath = path.join(projectDir, 'node_modules', '.bin', 'tsx');
+
+// Use the local tsx installation
+const child = spawn(tsxPath, [indexPath, ...process.argv.slice(2)], {
+  stdio: 'inherit',
+  cwd: projectDir
+});
+
+child.on('exit', (code) => {
+  process.exit(code || 0);
+});

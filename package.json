@@ -4,6 +4,9 @@
   "description": "",
   "type": "module",
   "main": "index.js",
+  "bin": {
+    "doctool": "./bin/doctool"
+  },
   "scripts": {
     "test": "vitest --run",
     "test:watch": "vitest",

@@ -1,3 +1,4 @@
+#!/usr/bin/env tsx
 import { PraisonAIAgents } from "praisonai";
 import "dotenv/config";
 import { storyAgent, summaryAgent } from "./agents";
