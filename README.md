@@ -1,7 +1,6 @@
 # DocTool
 
-[![Publish Any Commit](https://github.com/your-username/doctool/actions/workflows/pkg-pr-new.yml/badge.svg)](https://github.com/your-username/doctool/actions/workflows/pkg-pr-new.yml)
-[![pkg.pr.new](https://pkg.pr.new/badge?package=doctool)](https://pkg.pr.new/doctool)
+[![pkg.pr.new](https://pkg.pr.new/badge/PinePeakDigital/doctool)](https://pkg.pr.new/~/PinePeakDigital/doctool)
 
 > **AI-powered documentation validation and management system**
 
@@ -113,7 +112,7 @@ doctool enhance /path/to/project
 - Adds file listings and dependency information
 - Creates comprehensive documentation from code analysis
 
-### `update [path]` 
+### `update [path]`
 Updates documentation using issue-driven targeted fixes.
 
 ```bash
@@ -200,7 +199,7 @@ doctool/
 │   ├── agents/           # AI agent definitions
 │   ├── utils/            # Core utilities
 │   │   ├── fileSystemValidator.ts    # File/path validation
-│   │   ├── linkValidator.ts          # URL/link validation  
+│   │   ├── linkValidator.ts          # URL/link validation
 │   │   ├── documentationIssues.ts    # Issue detection
 │   │   ├── documentationFixer.ts     # Targeted fixes
 │   │   ├── aiContentGenerator.ts     # AI content generation
@@ -271,7 +270,7 @@ Warnings: 2
 📊 Documentation Fix Report
 ========================================
 Files processed: 4
-Total issues found: 8  
+Total issues found: 8
 Fixes applied: 6
 Fixes skipped: 2
 
