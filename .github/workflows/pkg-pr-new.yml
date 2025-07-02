@@ -38,4 +38,4 @@ jobs:
           echo "Package is ready for publishing"
 
       - name: Publish to pkg.pr.new
-        run: pnpm dlx pkg-pr-new publish --compact
+        run: pnpm dlx pkg-pr-new publish
