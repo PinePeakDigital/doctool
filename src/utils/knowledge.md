@@ -9,9 +9,11 @@ The utils directory contains utility functions and helper modules that support t
 ### Files
 - `aiContentGenerator.test.ts` - Test file for aiContentGenerator.test functionality
 - `aiContentGenerator.ts` - Contains 1 class with core functionality
+- `apiKeyValidator.test.ts` - Test file for apiKeyValidator.test functionality
+- `apiKeyValidator.ts` - Defines 1 interface for type safety
 - `contentGenerator.ts` - AI-powered content generation utilities for enhancing knowledge files
 - `diffUtils.test.ts` - Test file for diffUtils.test functionality
-- `diffUtils.ts` - TypeScript/JavaScript module containing diffUtils functionality
+- `diffUtils.ts` - Defines 3 interfaces for type safety
 - `documentationFixer.ts` - TypeScript/JavaScript module containing documentationFixer functionality
 - `documentationIssues.ts` - TypeScript/JavaScript module containing documentationIssues functionality
 - `fileSystemValidator.test.ts` - Test file for fileSystemValidator.test functionality

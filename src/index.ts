@@ -119,9 +119,9 @@ Options:
   --severity-threshold     Include fixes at this severity level and above (low|medium|high, default: medium)
   --help, -h              Show this help message
 
-API Key:
-  Requires OPENAI_API_KEY environment variable for AI features.
-  Falls back to intelligent content generation if not set.
+Environment Variables:
+  OPENAI_API_KEY              API key for AI features (falls back to intelligent generation if not set)
+  DOCTOOL_SEVERITY_THRESHOLD   Default severity threshold (low|medium|high, default: medium)
 
 Examples:
   doctool update
@@ -254,9 +254,15 @@ async function runCLI() {
           if (['low', 'medium', 'high'].includes(value)) {
             severityThreshold = value;
           }
+        } else if (process.env.DOCTOOL_SEVERITY_THRESHOLD) {
+          // Check if severity threshold is set via environment variable
+          const envValue = process.env.DOCTOOL_SEVERITY_THRESHOLD;
+          if (['low', 'medium', 'high'].includes(envValue)) {
+            severityThreshold = envValue as 'low' | 'medium' | 'high';
+          }
         }
       }
-      
+
       await updateKnowledgeFilesWithAI(targetPath, { interactive, dryRun, severityThreshold, verbose });
       break;
 
