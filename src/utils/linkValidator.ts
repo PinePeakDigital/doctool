@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { DocumentationLocation, ValidationIssue } from './fileSystemValidator';
+import { DocumentationLocation, ValidationIssue } from './fileSystemValidator.js';
 
 export interface LinkReference {
   url: string;

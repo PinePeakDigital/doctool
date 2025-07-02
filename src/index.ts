@@ -1,9 +1,9 @@
 import "dotenv/config";
-import { validateOpenAIKey } from "./utils/apiKeyValidator";
-import { initializeKnowledgeFiles } from "./utils/knowledgeManager";
-import { enhanceKnowledgeFiles, updateKnowledgeFilesWithAI } from "./utils/aiContentGenerator";
-import { validateDocs } from "./validateDocs";
-import { warnIfNoAPIKey, requireValidAPIKey } from "./utils/apiKeyValidator";
+import { validateOpenAIKey } from "./utils/apiKeyValidator.js";
+import { initializeKnowledgeFiles } from "./utils/knowledgeManager.js";
+import { enhanceKnowledgeFiles, updateKnowledgeFilesWithAI } from "./utils/aiContentGenerator.js";
+import { validateDocs } from "./validateDocs.js";
+import { warnIfNoAPIKey, requireValidAPIKey } from "./utils/apiKeyValidator.js";
 
 function showHelp() {
   console.log(`🚀 DocTool CLI
@@ -275,7 +275,7 @@ async function runCLI() {
       // Dynamic import to avoid startup errors
       try {
         const { PraisonAIAgents } = await import('praisonai');
-        const { storyAgent, summaryAgent } = await import('./agents');
+        const { storyAgent, summaryAgent } = await import('./agents/index.js');
         
         const agents = new PraisonAIAgents({
           agents: [storyAgent, summaryAgent],

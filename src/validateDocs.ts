@@ -1,9 +1,7 @@
-#!/usr/bin/env tsx
-
 import * as path from 'path';
 import * as fs from 'fs';
-import { FileSystemValidator } from './utils/fileSystemValidator';
-import { LinkValidator } from './utils/linkValidator';
+import { FileSystemValidator } from './utils/fileSystemValidator.js';
+import { LinkValidator } from './utils/linkValidator.js';
 
 export async function validateDocs(basePath: string = process.cwd()) {
   console.log('🔍 DocTool Documentation Validator');

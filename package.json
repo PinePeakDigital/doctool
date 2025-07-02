@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "AI-powered documentation validation and management system",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "bin": {
-    "doctool": "./dist/bin/doctool.js"
+    "doctool": "./dist/src/bin/doctool.js"
   },
   "files": [
     "dist/**/*",
@@ -22,11 +22,11 @@
     "dev:update": "tsx src/index.ts update",
     "dev:generate:content": "tsx src/generateContent.ts",
     "dev:validate:docs": "tsx src/validateDocs.ts",
-    "start": "node dist/index.js",
-    "enhance": "node dist/index.js enhance",
-    "update": "node dist/index.js update",
-    "generate:content": "node dist/generateContent.js",
-    "validate:docs": "node dist/validateDocs.js",
+    "start": "node dist/src/index.js",
+    "enhance": "node dist/src/index.js enhance",
+    "update": "node dist/src/index.js update",
+    "generate:content": "node dist/src/generateContent.js",
+    "validate:docs": "node dist/src/validateDocs.js",
     "build": "tsc",
     "build:clean": "rm -rf dist",
     "prebuild": "npm run build:clean",
@@ -61,6 +61,7 @@
   "homepage": "https://github.com/narthur/doctool#readme",
   "packageManager": "pnpm@10.6.1",
   "dependencies": {
+    "doctool": "link:",
     "dotenv": "^17.0.1",
     "praisonai": "^1.0.19",
     "tsx": "^4.20.3",
@@ -70,5 +71,10 @@
     "@types/node": "^24.0.10",
     "@vitest/coverage-v8": "^3.2.4",
     "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "doctool": "link:"
+    }
   }
 }

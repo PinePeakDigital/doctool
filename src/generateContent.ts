@@ -1,7 +1,5 @@
-#!/usr/bin/env tsx
-
 import * as path from 'path';
-import { analyzeDirectoryForContent, getCodeContent, updateKnowledgeFile } from './utils/contentGenerator';
+import { analyzeDirectoryForContent, getCodeContent, updateKnowledgeFile } from './utils/contentGenerator.js';
 
 async function main() {
   console.log('🚀 Starting content generation for src/utils/...');

@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { getChangesSinceDate, getLastUpdateTimestamp, getRepositoryInfo, GitChanges } from './gitUtils';
-import { generateDiff, formatDiffForConsole, promptUserApproval, parseMarkdownSections, mergeSections, FileDiff } from './diffUtils';
+import { getChangesSinceDate, getLastUpdateTimestamp, getRepositoryInfo, GitChanges } from './gitUtils.js';
+import { generateDiff, formatDiffForConsole, promptUserApproval, parseMarkdownSections, mergeSections, FileDiff } from './diffUtils.js';
 
 interface DirectoryAnalysis {
   name: string;

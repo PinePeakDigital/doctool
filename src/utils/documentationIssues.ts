@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { getChangesSinceDate, getLastUpdateTimestamp } from './gitUtils';
-import { parseMarkdownSections, ContentSection } from './diffUtils';
+import { getChangesSinceDate, getLastUpdateTimestamp } from './gitUtils.js';
+import { parseMarkdownSections, ContentSection } from './diffUtils.js';
 
 export interface DocumentationIssue {
   type: 'missing_files' | 'outdated_descriptions' | 'missing_sections' | 'placeholder_content' | 'inconsistent_structure';

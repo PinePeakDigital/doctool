@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { DocumentationIssue, DocumentationAnalysis } from './documentationIssues';
-import { parseMarkdownSections, ContentSection } from './diffUtils';
+import { DocumentationIssue, DocumentationAnalysis } from './documentationIssues.js';
+import { parseMarkdownSections, ContentSection } from './diffUtils.js';
 
 export interface FixResult {
   issue: DocumentationIssue;

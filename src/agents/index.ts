@@ -1,4 +1,4 @@
-export { storyAgent } from "./storyAgent";
-export { summaryAgent } from "./summaryAgent";
-export { knowledgeManagerAgent } from "./knowledgeManagerAgent";
-export { contentGeneratorAgent } from "./contentGeneratorAgent";
+export { storyAgent } from "./storyAgent.js";
+export { summaryAgent } from "./summaryAgent.js";
+export { knowledgeManagerAgent } from "./knowledgeManagerAgent.js";
+export { contentGeneratorAgent } from "./contentGeneratorAgent.js";

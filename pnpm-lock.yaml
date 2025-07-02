@@ -4,10 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  doctool: 'link:'
+
 importers:
 
   .:
     dependencies:
+      doctool:
+        specifier: 'link:'
+        version: 'link:'
       dotenv:
         specifier: ^17.0.1
         version: 17.0.1
