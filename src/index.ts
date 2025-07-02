@@ -2,7 +2,7 @@ import { PraisonAIAgents } from "praisonai";
 import "dotenv/config";
 import { storyAgent, summaryAgent } from "./agents";
 import { initializeKnowledgeFiles } from "./utils/knowledgeManager";
-import { enhanceKnowledgeFiles } from "./utils/aiContentGenerator";
+import { enhanceKnowledgeFiles, updateKnowledgeFilesWithAI } from "./utils/aiContentGenerator";
 import { validateDocs } from "./validateDocs";
 
 function showHelp() {
@@ -16,6 +16,7 @@ Commands:
   validate [path]    Validate documentation files (default: current directory)
   init [path]        Initialize knowledge files (default: current directory)
   enhance [path]     Enhance knowledge files with AI-generated content (default: current directory)
+  update [path]      Update existing knowledge files based on code changes (default: current directory)
   agents            Start AI agents (PraisonAI)
   help              Show this help message
 
@@ -50,6 +51,11 @@ async function runCLI() {
     case 'enhance':
       console.log(`\n🤖 Enhancing knowledge files with AI in: ${targetPath}`);
       await enhanceKnowledgeFiles(targetPath);
+      break;
+
+    case 'update':
+      console.log(`\n🔄 Updating knowledge files based on changes in: ${targetPath}`);
+      await updateKnowledgeFilesWithAI(targetPath);
       break;
 
     case 'agents':

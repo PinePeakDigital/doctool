@@ -1,5 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { getChangesSinceDate, getLastUpdateTimestamp, getRepositoryInfo, GitChanges } from './gitUtils';
+import { generateDiff, formatDiffForConsole, promptUserApproval, parseMarkdownSections, mergeSections, FileDiff } from './diffUtils';
 
 interface DirectoryAnalysis {
   name: string;
@@ -473,6 +475,143 @@ export function needsAIEnhancement(knowledgeContent: string): boolean {
   ];
   
   return templateIndicators.some(indicator => knowledgeContent.includes(indicator));
+}
+
+/**
+ * Analyzes if a knowledge file needs updating based on changes
+ */
+interface UpdateAnalysis {
+  filePath: string;
+  needsUpdate: boolean;
+  lastUpdate: Date | null;
+  relevantChanges: GitChanges;
+  updateReason: string;
+}
+
+export async function analyzeKnowledgeFileForUpdates(filePath: string, basePath: string): Promise<UpdateAnalysis> {
+  const lastUpdate = getLastUpdateTimestamp(filePath);
+  const dirPath = path.dirname(filePath);
+  
+  // Default to 30 days ago if no timestamp found
+  const checkDate = lastUpdate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  
+  // Get changes since last update
+  const changes = getChangesSinceDate(basePath, checkDate);
+  
+  // Filter changes relevant to this directory
+  const relevantChanges: GitChanges = {
+    newFiles: changes.newFiles.filter(f => f.startsWith(path.relative(basePath, dirPath))),
+    modifiedFiles: changes.modifiedFiles.filter(f => f.startsWith(path.relative(basePath, dirPath))),
+    deletedFiles: changes.deletedFiles.filter(f => f.startsWith(path.relative(basePath, dirPath))),
+    lastCommitDate: changes.lastCommitDate
+  };
+  
+  const totalChanges = relevantChanges.newFiles.length + 
+                      relevantChanges.modifiedFiles.length + 
+                      relevantChanges.deletedFiles.length;
+  
+  let updateReason = '';
+  let needsUpdate = false;
+  
+  if (totalChanges > 0) {
+    needsUpdate = true;
+    updateReason = `${totalChanges} file(s) changed in directory since last update`;
+  } else if (!lastUpdate) {
+    needsUpdate = true;
+    updateReason = 'No update timestamp found - may need refresh';
+  }
+  
+  return {
+    filePath,
+    needsUpdate,
+    lastUpdate,
+    relevantChanges,
+    updateReason
+  };
+}
+
+/**
+ * Intelligently updates knowledge files with user approval
+ */
+export async function updateKnowledgeFilesWithAI(basePath: string = process.cwd()): Promise<void> {
+  console.log(`🔄 Checking for knowledge file updates in: ${basePath}`);
+  
+  const repoInfo = getRepositoryInfo(basePath);
+  if (!repoInfo.hasGit) {
+    console.log('⚠️  Git not available - limited change detection capabilities');
+  }
+  
+  const knowledgeFiles = findKnowledgeFiles(basePath);
+  let updatedCount = 0;
+  let skippedCount = 0;
+  
+  for (const filePath of knowledgeFiles) {
+    try {
+      const analysis = await analyzeKnowledgeFileForUpdates(filePath, basePath);
+      
+      if (!analysis.needsUpdate) {
+        console.log(`✅ Up to date: ${path.relative(basePath, filePath)}`);
+        skippedCount++;
+        continue;
+      }
+      
+      console.log(`\n🔍 Analyzing: ${path.relative(basePath, filePath)}`);
+      console.log(`   Reason: ${analysis.updateReason}`);
+      
+      if (analysis.relevantChanges.newFiles.length > 0) {
+        console.log(`   New files: ${analysis.relevantChanges.newFiles.join(', ')}`);
+      }
+      if (analysis.relevantChanges.modifiedFiles.length > 0) {
+        console.log(`   Modified files: ${analysis.relevantChanges.modifiedFiles.join(', ')}`);
+      }
+      if (analysis.relevantChanges.deletedFiles.length > 0) {
+        console.log(`   Deleted files: ${analysis.relevantChanges.deletedFiles.join(', ')}`);
+      }
+      
+      // Generate new content
+      const dirPath = path.dirname(filePath);
+      const newContent = await generateKnowledgeContent(dirPath);
+      
+      if (!newContent) {
+        console.log(`⚠️  Failed to generate updated content for: ${filePath}`);
+        continue;
+      }
+      
+      // Compare with existing content
+      const existingContent = fs.readFileSync(filePath, 'utf8');
+      const diff = generateDiff(existingContent, newContent, path.relative(basePath, filePath));
+      
+      if (!diff.hasChanges) {
+        console.log(`   ✅ No content changes needed`);
+        skippedCount++;
+        continue;
+      }
+      
+      // Show diff and ask for approval
+      console.log(formatDiffForConsole(diff));
+      
+      const shouldUpdate = await promptUserApproval(
+        `Update ${path.relative(basePath, filePath)} with these changes?`
+      );
+      
+      if (shouldUpdate) {
+        updateKnowledgeFile(dirPath, newContent);
+        updatedCount++;
+        console.log(`✅ Updated: ${path.relative(basePath, filePath)}`);
+      } else {
+        console.log(`⏭️  Skipped: ${path.relative(basePath, filePath)}`);
+        skippedCount++;
+      }
+      
+    } catch (error) {
+      console.error(`❌ Error processing ${filePath}:`, error);
+    }
+  }
+  
+  console.log(`\n📊 Update Summary:`);
+  console.log(`- Knowledge files updated: ${updatedCount}`);
+  console.log(`- Files skipped: ${skippedCount}`);
+  console.log(`- Total knowledge files: ${knowledgeFiles.length}`);
 }
 
 /**

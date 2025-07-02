@@ -10,6 +10,7 @@
     "test:coverage": "vitest --coverage",
     "start": "tsx src/index.ts",
     "enhance": "tsx src/index.ts enhance",
+    "update": "tsx src/index.ts update",
     "generate:content": "tsx src/generateContent.ts",
     "validate:docs": "tsx src/validateDocs.ts"
   },
@@ -18,13 +19,13 @@
   "license": "ISC",
   "packageManager": "pnpm@10.6.1",
   "dependencies": {
-    "dotenv": "^17.0.0",
+    "dotenv": "^17.0.1",
     "praisonai": "^1.0.19",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@types/node": "^24.0.7",
+    "@types/node": "^24.0.10",
     "vitest": "^3.2.4"
   }
 }
