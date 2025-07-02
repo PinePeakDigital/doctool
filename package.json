@@ -1,12 +1,18 @@
 {
   "name": "doctool",
   "version": "1.0.0",
-  "description": "",
+  "description": "AI-powered documentation validation and management system",
   "type": "module",
-  "main": "index.js",
+  "main": "src/index.ts",
   "bin": {
     "doctool": "./bin/doctool"
   },
+  "files": [
+    "src/**/*",
+    "bin/**/*",
+    "README.md",
+    "package.json"
+  ],
   "scripts": {
     "test": "vitest --run",
     "test:watch": "vitest",
@@ -17,9 +23,29 @@
     "generate:content": "tsx src/generateContent.ts",
     "validate:docs": "tsx src/validateDocs.ts"
   },
-  "keywords": [],
+  "keywords": [
+    "documentation",
+    "validation",
+    "ai",
+    "cli",
+    "knowledge-management",
+    "markdown",
+    "link-checker",
+    "file-validation"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/doctool.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/doctool/issues"
+  },
+  "homepage": "https://github.com/your-username/doctool#readme",
   "packageManager": "pnpm@10.6.1",
   "dependencies": {
     "dotenv": "^17.0.1",

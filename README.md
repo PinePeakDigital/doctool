@@ -137,6 +137,23 @@ doctool update --severity-threshold low
 ### `agents`
 Starts AI agents for advanced documentation processing (requires PraisonAI setup).
 
+## 🧪 Testing Unreleased Versions
+
+You can test any commit or pull request using [pkg.pr.new](https://pkg.pr.new):
+
+```bash
+# Test the latest main branch
+npx https://pkg.pr.new/doctool@main --help
+
+# Test a specific pull request
+npx https://pkg.pr.new/doctool@pr-123 validate
+
+# Install a specific commit globally
+npm install -g https://pkg.pr.new/doctool@sha-abc1234
+```
+
+> 📖 **See [docs/pkg-pr-new.md](docs/pkg-pr-new.md) for complete documentation**
+
 ## 🔧 Configuration
 
 DocTool works out of the box with sensible defaults, but you can customize its behavior:
