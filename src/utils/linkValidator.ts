@@ -155,7 +155,7 @@ export class LinkValidator {
     try {
       switch (link.type) {
         case 'http':
-        case 'https':
+        case 'https': {
           const httpResult = await this.validateHttpUrl(link);
           if (!httpResult.valid) {
             valid = false;
@@ -174,8 +174,9 @@ export class LinkValidator {
             });
           }
           break;
+        }
 
-        case 'internal':
+        case 'internal': {
           const internalResult = this.validateInternalLink(link, docFilePath);
           if (!internalResult.valid) {
             valid = false;
@@ -194,8 +195,9 @@ export class LinkValidator {
             });
           }
           break;
+        }
 
-        case 'anchor':
+        case 'anchor': {
           const anchorResult = this.validateAnchorLink(link, docFilePath);
           if (!anchorResult.valid) {
             valid = false;
@@ -214,8 +216,9 @@ export class LinkValidator {
             });
           }
           break;
+        }
 
-        case 'mailto':
+        case 'mailto': {
           const emailResult = this.validateEmailAddress(link);
           if (!emailResult.valid) {
             valid = false;
@@ -234,6 +237,7 @@ export class LinkValidator {
             });
           }
           break;
+        }
 
         case 'ftp':
           // For now, we'll just mark FTP as valid since validation is complex
@@ -312,9 +316,9 @@ export class LinkValidator {
     const targetPath = path.resolve(basePath, link.url.split('#')[0]); // Remove anchor
 
     try {
-      const stats = fs.statSync(targetPath);
+      fs.statSync(targetPath);
       return { valid: true };
-    } catch (error) {
+    } catch {
       // Try to suggest similar files
       const suggestion = this.suggestSimilarFiles(link.url, basePath);
       return { valid: false, suggestion };
@@ -364,7 +368,7 @@ export class LinkValidator {
         
         return { valid: false, suggestion };
       }
-    } catch (error) {
+    } catch {
       return { valid: false, suggestion: 'Could not read target file' };
     }
   }
@@ -446,7 +450,7 @@ export class LinkValidator {
       if (similar.length > 0) {
         return `Similar files found: ${similar.slice(0, 3).join(', ')}`;
       }
-    } catch (error) {
+    } catch {
       // Directory doesn't exist
     }
     return 'Check if the file path is correct and the file exists';

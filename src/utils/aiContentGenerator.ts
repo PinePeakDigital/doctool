@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { getChangesSinceDate, getLastUpdateTimestamp, getRepositoryInfo, GitChanges } from './gitUtils.js';
-import { generateDiff, formatDiffForConsole, promptUserApproval, parseMarkdownSections, mergeSections, FileDiff } from './diffUtils.js';
+// import { generateDiff, formatDiffForConsole, promptUserApproval, parseMarkdownSections, mergeSections, FileDiff } from './diffUtils.js';
 
 interface DirectoryAnalysis {
   name: string;
@@ -31,7 +31,8 @@ class OpenAIProvider implements AIProvider {
   private simulateAIResponse(prompt: string): string {
     // This is a fallback that does intelligent content generation
     // based on the code analysis in the prompt
-    const lines = prompt.split('\n');
+    // Parse the prompt to extract information
+    prompt.split('\n');
     const directoryName = this.extractDirectoryName(prompt);
     const files = this.extractFiles(prompt);
     const codeContent = this.extractCodeContent(prompt);
@@ -83,7 +84,7 @@ class OpenAIProvider implements AIProvider {
     
     let overview = '';
     let purpose = '';
-    let keyComponents = '';
+    const keyComponents = '';
     
     if (isTestDirectory) {
       overview = `The ${directoryName} directory contains test files and testing utilities that ensure code quality and reliability.`;

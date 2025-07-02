@@ -479,7 +479,7 @@ See [missing section](#missing) below.
       const validator = new LinkValidator();
       
       // Access private method through type assertion for testing
-      const normalize = (validator as any).normalizeAnchor.bind(validator);
+      const normalize = (validator as unknown as { normalizeAnchor: (anchor: string) => string }).normalizeAnchor.bind(validator);
       
       expect(normalize('Installation Guide')).toBe('installation-guide');
       expect(normalize('API & SDK')).toBe('api-sdk');
@@ -500,7 +500,7 @@ Some content here.
       `.trim();
 
       const validator = new LinkValidator();
-      const headings = (validator as any).extractHeadings(content);
+      const headings = (validator as unknown as { extractHeadings: (content: string) => string[] }).extractHeadings(content);
 
       expect(headings).toEqual([
         'Main Title',

@@ -140,7 +140,7 @@ export async function generateKnowledgeContent(dirPath: string): Promise<string 
     const codeContent = getCodeContent(dirPath, analysis.codeFiles);
     
     // Create prompt for the AI agent
-    const prompt = createContentGenerationPrompt(analysis, codeContent);
+    createContentGenerationPrompt(analysis, codeContent);
     
     console.log(`🤖 Generating content with AI...`);
     

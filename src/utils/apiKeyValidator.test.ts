@@ -66,7 +66,7 @@ describe('API Key Validator', () => {
   });
 
   describe('warnIfNoAPIKey', () => {
-    let consoleSpy: any;
+    let consoleSpy: { warn: ReturnType<typeof vi.spyOn>; log: ReturnType<typeof vi.spyOn> };
     
     beforeEach(() => {
       consoleSpy = {
@@ -111,17 +111,17 @@ describe('API Key Validator', () => {
   });
 
   describe('requireValidAPIKey', () => {
-    let consoleSpy: any;
-    let exitSpy: any;
+    let consoleSpy: { error: ReturnType<typeof vi.spyOn>; log: ReturnType<typeof vi.spyOn> };
+    let exitSpy: any; // eslint-disable-line @typescript-eslint/no-explicit-any
     
     beforeEach(() => {
       consoleSpy = {
         error: vi.spyOn(console, 'error').mockImplementation(() => {}),
         log: vi.spyOn(console, 'log').mockImplementation(() => {})
       };
-      exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {
+      exitSpy = vi.spyOn(process, 'exit').mockImplementation((() => {
         throw new Error('process.exit called');
-      });
+      }) as never);
     });
     
     afterEach(() => {

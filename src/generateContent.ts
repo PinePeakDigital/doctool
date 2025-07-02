@@ -43,7 +43,7 @@ async function main() {
   }
 }
 
-function generateUtilsKnowledgeContent(analysis: any, codeContent: Record<string, string>): string {
+function generateUtilsKnowledgeContent(analysis: { name: string; files: string[]; subdirectories: string[] }, codeContent: Record<string, string>): string {
   const hasKnowledgeManager = 'knowledgeManager.ts' in codeContent;
   const hasContentGenerator = 'contentGenerator.ts' in codeContent;
   const hasTests = analysis.files.some((f: string) => f.endsWith('.test.ts'));

@@ -64,7 +64,7 @@ export function analyzeDocumentationIssues(
   try {
     content = fs.readFileSync(knowledgeFilePath, 'utf8');
     sections = parseMarkdownSections(content);
-  } catch (error) {
+  } catch {
     issues.push({
       type: 'missing_sections',
       severity: 'high',
@@ -302,7 +302,7 @@ function getCurrentDirectoryFiles(dirPath: string): string[] {
     return fs.readdirSync(dirPath, { withFileTypes: true })
       .filter(item => item.isFile())
       .map(item => item.name);
-  } catch (error) {
+  } catch {
     return [];
   }
 }
@@ -376,7 +376,7 @@ function generateBetterFileDescription(fileName: string, dirPath: string): strin
     }
     
     return generateFileDescription(fileName);
-  } catch (error) {
+  } catch {
     return generateFileDescription(fileName);
   }
 }

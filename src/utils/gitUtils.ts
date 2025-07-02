@@ -42,7 +42,7 @@ export function getRepositoryInfo(basePath: string): RepositoryInfo {
       lastCommitDate,
       workingDirectory: basePath
     };
-  } catch (error) {
+  } catch {
     return {
       hasGit: false,
       workingDirectory: basePath
@@ -108,7 +108,7 @@ export function getChangesSinceDate(basePath: string, sinceDate: Date): GitChang
     }
     
     return changes;
-  } catch (error) {
+  } catch {
     console.warn('⚠️  Git command failed - falling back to file system timestamps');
     return getChangesFromFileSystem(basePath, sinceDate);
   }
@@ -143,7 +143,7 @@ function getChangesFromFileSystem(basePath: string, sinceDate: Date): GitChanges
           scanDirectory(fullPath);
         }
       }
-    } catch (error) {
+    } catch {
       // Skip directories we can't read
     }
   }
@@ -216,7 +216,7 @@ export function getLastUpdateTimestamp(knowledgeFilePath: string): Date | null {
     // Fallback to file modification time
     const stats = fs.statSync(knowledgeFilePath);
     return stats.mtime;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -238,7 +238,7 @@ export function hasUncommittedChanges(basePath: string): boolean {
     });
     
     return statusOutput.trim().length > 0;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
