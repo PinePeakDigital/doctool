@@ -17,6 +17,8 @@ Commands:
   init [path]        Initialize knowledge files (default: current directory)
   enhance [path]     Enhance knowledge files with AI-generated content (default: current directory)
   update [path]      Update existing knowledge files based on code changes (default: current directory)
+                       --interactive, -i    Prompt before each update
+                       --dry-run, -d       Show what would be updated without making changes
   agents            Start AI agents (PraisonAI)
   help              Show this help message
 
@@ -27,13 +29,36 @@ Examples:
   doctool init /path/to/project
   doctool enhance
   doctool enhance /path/to/project
+  doctool update                     # Auto-update, use git to review
+  doctool update --interactive       # Prompt before each update
+  doctool update --dry-run          # See what would be updated
   doctool agents`);
 }
 
 async function runCLI() {
   const args = process.argv.slice(2);
   const command = args[0] || 'help';
-  const targetPath = args[1] || process.cwd();
+  
+  // Parse flags and path for all commands  
+  const flags: string[] = [];
+  const nonFlagArgs: string[] = [];
+  
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    
+    if (arg.startsWith('-')) {
+      flags.push(arg);
+      // If this flag might take a value, check the next argument
+      if (arg === '--severity-threshold' && i + 1 < args.length && !args[i + 1].startsWith('-')) {
+        flags.push(args[i + 1]);
+        i++; // Skip the next argument since we consumed it
+      }
+    } else {
+      nonFlagArgs.push(arg);
+    }
+  }
+  
+  const targetPath = nonFlagArgs[1] || process.cwd();
 
   console.log("🚀 DocTool CLI");
 
@@ -55,7 +80,31 @@ async function runCLI() {
 
     case 'update':
       console.log(`\n🔄 Updating knowledge files based on changes in: ${targetPath}`);
-      await updateKnowledgeFilesWithAI(targetPath);
+      
+      // Parse flags for update command
+      const interactive = flags.includes('--interactive') || flags.includes('-i');
+      const dryRun = flags.includes('--dry-run') || flags.includes('-d');
+      
+      // Parse severity threshold
+      let severityThreshold: 'low' | 'medium' | 'high' = 'medium';
+      const severityFlag = flags.find(f => f.startsWith('--severity-threshold='));
+      if (severityFlag) {
+        const value = severityFlag.split('=')[1] as 'low' | 'medium' | 'high';
+        if (['low', 'medium', 'high'].includes(value)) {
+          severityThreshold = value;
+        }
+      } else {
+        // Check for separate flag and value
+        const severityIndex = flags.indexOf('--severity-threshold');
+        if (severityIndex !== -1 && severityIndex + 1 < flags.length) {
+          const value = flags[severityIndex + 1] as 'low' | 'medium' | 'high';
+          if (['low', 'medium', 'high'].includes(value)) {
+            severityThreshold = value;
+          }
+        }
+      }
+      
+      await updateKnowledgeFilesWithAI(targetPath, { interactive, dryRun, severityThreshold });
       break;
 
     case 'agents':

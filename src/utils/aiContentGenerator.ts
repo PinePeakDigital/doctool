@@ -531,10 +531,19 @@ export async function analyzeKnowledgeFileForUpdates(filePath: string, basePath:
 }
 
 /**
- * Intelligently updates knowledge files with user approval
+ * Updates knowledge files using targeted issue-driven fixes
  */
-export async function updateKnowledgeFilesWithAI(basePath: string = process.cwd()): Promise<void> {
-  console.log(`🔄 Checking for knowledge file updates in: ${basePath}`);
+export async function updateKnowledgeFilesWithAI(
+  basePath: string = process.cwd(), 
+  options: { interactive?: boolean; dryRun?: boolean; severityThreshold?: 'low' | 'medium' | 'high' } = {}
+): Promise<void> {
+  const { interactive = false, dryRun = false, severityThreshold = 'medium' } = options;
+  
+  // Import here to avoid circular dependencies
+  const { analyzeDocumentationIssues } = await import('./documentationIssues');
+  const { applyDocumentationFixes, createFixReport } = await import('./documentationFixer');
+  
+  console.log(`🔄 Analyzing documentation issues in: ${basePath}`);
   
   const repoInfo = getRepositoryInfo(basePath);
   if (!repoInfo.hasGit) {
@@ -542,65 +551,70 @@ export async function updateKnowledgeFilesWithAI(basePath: string = process.cwd(
   }
   
   const knowledgeFiles = findKnowledgeFiles(basePath);
-  let updatedCount = 0;
-  let skippedCount = 0;
+  const fixSummaries = [];
   
   for (const filePath of knowledgeFiles) {
     try {
-      const analysis = await analyzeKnowledgeFileForUpdates(filePath, basePath);
-      
-      if (!analysis.needsUpdate) {
-        console.log(`✅ Up to date: ${path.relative(basePath, filePath)}`);
-        skippedCount++;
-        continue;
-      }
-      
       console.log(`\n🔍 Analyzing: ${path.relative(basePath, filePath)}`);
-      console.log(`   Reason: ${analysis.updateReason}`);
       
-      if (analysis.relevantChanges.newFiles.length > 0) {
-        console.log(`   New files: ${analysis.relevantChanges.newFiles.join(', ')}`);
-      }
-      if (analysis.relevantChanges.modifiedFiles.length > 0) {
-        console.log(`   Modified files: ${analysis.relevantChanges.modifiedFiles.join(', ')}`);
-      }
-      if (analysis.relevantChanges.deletedFiles.length > 0) {
-        console.log(`   Deleted files: ${analysis.relevantChanges.deletedFiles.join(', ')}`);
-      }
+      // Analyze the file for issues
+      const analysis = analyzeDocumentationIssues(filePath, basePath);
       
-      // Generate new content
-      const dirPath = path.dirname(filePath);
-      const newContent = await generateKnowledgeContent(dirPath);
-      
-      if (!newContent) {
-        console.log(`⚠️  Failed to generate updated content for: ${filePath}`);
+      if (analysis.issues.length === 0) {
+        console.log(`   ✅ No issues found`);
         continue;
       }
       
-      // Compare with existing content
-      const existingContent = fs.readFileSync(filePath, 'utf8');
-      const diff = generateDiff(existingContent, newContent, path.relative(basePath, filePath));
+      // Show issue summary
+      const highIssues = analysis.issues.filter(i => i.severity === 'high').length;
+      const mediumIssues = analysis.issues.filter(i => i.severity === 'medium').length;
+      const lowIssues = analysis.issues.filter(i => i.severity === 'low').length;
       
-      if (!diff.hasChanges) {
-        console.log(`   ✅ No content changes needed`);
-        skippedCount++;
-        continue;
+      console.log(`   📊 Health: ${getHealthIcon(analysis.overallHealth)} ${analysis.overallHealth}`);
+      if (highIssues > 0) console.log(`   🔴 High: ${highIssues} issues`);
+      if (mediumIssues > 0) console.log(`   🟡 Medium: ${mediumIssues} issues`);
+      if (lowIssues > 0) console.log(`   🟢 Low: ${lowIssues} issues`);
+      
+      // Show directory changes
+      if (analysis.directoryChanges.newFiles.length > 0) {
+        console.log(`   ➕ New files: ${analysis.directoryChanges.newFiles.slice(0, 3).join(', ')}${analysis.directoryChanges.newFiles.length > 3 ? '...' : ''}`);
+      }
+      if (analysis.directoryChanges.deletedFiles.length > 0) {
+        console.log(`   ➖ Deleted files: ${analysis.directoryChanges.deletedFiles.slice(0, 3).join(', ')}${analysis.directoryChanges.deletedFiles.length > 3 ? '...' : ''}`);
       }
       
-      // Show diff and ask for approval
-      console.log(formatDiffForConsole(diff));
-      
-      const shouldUpdate = await promptUserApproval(
-        `Update ${path.relative(basePath, filePath)} with these changes?`
-      );
-      
-      if (shouldUpdate) {
-        updateKnowledgeFile(dirPath, newContent);
-        updatedCount++;
-        console.log(`✅ Updated: ${path.relative(basePath, filePath)}`);
+      // Apply targeted fixes
+      if (dryRun) {
+        console.log(`   📋 Would apply ${analysis.issues.filter(i => getSeverityLevel(i.severity) >= getSeverityLevel(severityThreshold)).length} fixes`);
+        fixSummaries.push({
+          filePath,
+          totalIssues: analysis.issues.length,
+          fixesApplied: analysis.issues.filter(i => getSeverityLevel(i.severity) >= getSeverityLevel(severityThreshold)).length,
+          fixesSkipped: 0,
+          results: []
+        });
       } else {
-        console.log(`⏭️  Skipped: ${path.relative(basePath, filePath)}`);
-        skippedCount++;
+        const fixSummary = applyDocumentationFixes(analysis, {
+          dryRun,
+          severityThreshold,
+          autoApprove: !interactive
+        });
+        
+        fixSummaries.push(fixSummary);
+        
+        if (fixSummary.fixesApplied > 0) {
+          console.log(`   ✅ Applied ${fixSummary.fixesApplied} fixes`);
+          // Update timestamp
+          const timestamp = new Date().toISOString().split('T')[0];
+          let content = fs.readFileSync(filePath, 'utf8');
+          content = content.replace(/\*Last updated: \d{4}-\d{2}-\d{2}\*/, `*Last updated: ${timestamp}*`);
+          if (!content.includes('*Last updated:')) {
+            content += `\n\n---\n\n*Last updated: ${timestamp}*\n*Updated with targeted issue fixes*`;
+          }
+          fs.writeFileSync(filePath, content, 'utf8');
+        } else {
+          console.log(`   ⏭️  No fixes applied`);
+        }
       }
       
     } catch (error) {
@@ -608,10 +622,33 @@ export async function updateKnowledgeFilesWithAI(basePath: string = process.cwd(
     }
   }
   
-  console.log(`\n📊 Update Summary:`);
-  console.log(`- Knowledge files updated: ${updatedCount}`);
-  console.log(`- Files skipped: ${skippedCount}`);
-  console.log(`- Total knowledge files: ${knowledgeFiles.length}`);
+  // Show summary report
+  if (fixSummaries.length > 0) {
+    console.log(`\n${createFixReport(fixSummaries)}`);
+  }
+  
+  const totalFixes = fixSummaries.reduce((sum, s) => sum + s.fixesApplied, 0);
+  
+  if (totalFixes > 0 && !dryRun && repoInfo.hasGit) {
+    console.log(`💡 Tip: Review changes with:`);
+    console.log(`   git diff                    # See all changes`);
+    console.log(`   git add -p                  # Interactively stage changes`);
+    console.log(`   git commit -m "docs: fix documentation issues"`);
+  }
+}
+
+function getHealthIcon(health: string): string {
+  switch (health) {
+    case 'good': return '✅';
+    case 'needs_attention': return '⚠️ ';
+    case 'poor': return '❌';
+    default: return '❓';
+  }
+}
+
+function getSeverityLevel(severity: string): number {
+  const levels = { low: 0, medium: 1, high: 2 };
+  return levels[severity as keyof typeof levels] || 0;
 }
 
 /**
