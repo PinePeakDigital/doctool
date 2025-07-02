@@ -1,4 +1,3 @@
-#!/usr/bin/env tsx
 import "dotenv/config";
 import { validateOpenAIKey } from "./utils/apiKeyValidator";
 import { initializeKnowledgeFiles } from "./utils/knowledgeManager";

@@ -7,17 +7,36 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-// Project directory - hardcoded for npm link to work
-const projectDir = '/mnt/backup/ProgrammingProjects/doctool';
+// Get the directory where this script is located
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Project directory is one level up from bin/
+const projectDir = path.dirname(__dirname);
 const indexPath = path.join(projectDir, 'src', 'index.ts');
-const tsxPath = path.join(projectDir, 'node_modules', '.bin', 'tsx');
 
-// Use the local tsx installation
-const child = spawn(tsxPath, [indexPath, ...process.argv.slice(2)], {
-  stdio: 'inherit',
-  cwd: projectDir
-});
+// Try to find tsx in the package's node_modules
+let tsxPath = path.join(projectDir, 'node_modules', '.bin', 'tsx');
 
-child.on('exit', (code) => {
-  process.exit(code || 0);
-});
+// If tsx doesn't exist locally, try to use npx or fall back to tsx globally
+if (!fs.existsSync(tsxPath)) {
+  // Try to use npx tsx
+  const child = spawn('npx', ['tsx', indexPath, ...process.argv.slice(2)], {
+    stdio: 'inherit',
+    cwd: projectDir
+  });
+  
+  child.on('exit', (code) => {
+    process.exit(code || 0);
+  });
+} else {
+  // Use the local tsx installation
+  const child = spawn(tsxPath, [indexPath, ...process.argv.slice(2)], {
+    stdio: 'inherit',
+    cwd: projectDir
+  });
+  
+  child.on('exit', (code) => {
+    process.exit(code || 0);
+  });
+}

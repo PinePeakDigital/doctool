@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "AI-powered documentation validation and management system",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
-    "doctool": "./bin/doctool"
+    "doctool": "./dist/bin/doctool.js"
   },
   "files": [
-    "src/**/*",
-    "bin/**/*",
+    "dist/**/*",
     "README.md",
     "package.json"
   ],
@@ -17,17 +17,24 @@
     "test": "vitest --run",
     "test:watch": "vitest",
     "test:coverage": "vitest --coverage",
-    "start": "tsx src/index.ts",
-    "enhance": "tsx src/index.ts enhance",
-    "update": "tsx src/index.ts update",
-    "generate:content": "tsx src/generateContent.ts",
-    "validate:docs": "tsx src/validateDocs.ts",
+    "dev": "tsx src/index.ts",
+    "dev:enhance": "tsx src/index.ts enhance",
+    "dev:update": "tsx src/index.ts update",
+    "dev:generate:content": "tsx src/generateContent.ts",
+    "dev:validate:docs": "tsx src/validateDocs.ts",
+    "start": "node dist/index.js",
+    "enhance": "node dist/index.js enhance",
+    "update": "node dist/index.js update",
+    "generate:content": "node dist/generateContent.js",
+    "validate:docs": "node dist/validateDocs.js",
+    "build": "tsc",
+    "build:clean": "rm -rf dist",
+    "prebuild": "npm run build:clean",
     "lint": "tsc --noEmit",
     "lint:fix": "echo 'No linting fixes available yet'",
     "format": "echo 'Formatting not configured yet'",
     "format:check": "echo 'Format checking not configured yet'",
-    "build": "echo 'Build step not needed for CLI tool'",
-    "prepublishOnly": "pnpm test && pnpm lint"
+    "prepublishOnly": "pnpm build && pnpm test && pnpm lint"
   },
   "keywords": [
     "documentation",
