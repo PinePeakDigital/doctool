@@ -9,7 +9,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest --coverage",
     "start": "tsx src/index.ts",
-    "generate:content": "tsx src/generateContent.ts"
+    "generate:content": "tsx src/generateContent.ts",
+    "validate:docs": "tsx src/validateDocs.ts"
   },
   "keywords": [],
   "author": "",

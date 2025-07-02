@@ -82,6 +82,9 @@ doctool/
 ## Related Documentation
 
 - [`knowledge-buildout-plan.md`](./knowledge-buildout-plan.md) - Detailed plan for creating comprehensive knowledge files
+- [`documentation-validation-plan.md`](./documentation-validation-plan.md) - Comprehensive plan for reliable documentation validation and improvement
+- [`stack-agnostic-validation-plan.md`](./stack-agnostic-validation-plan.md) - Universal validation approach that works with any programming language or stack
+- [`validation-roadmap.md`](./validation-roadmap.md) - Technical implementation roadmap
 - [`multi-agent-plan.md`](./multi-agent-plan.md) - System architecture for multi-agent documentation review
 
 ---
